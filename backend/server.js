@@ -21,7 +21,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} | ${req.method} ${req.path}`);
+  next();
+});
+
 const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey123";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/digital_platform";
 
 // Import Models
 const User = require("./user");
@@ -32,11 +39,80 @@ const Service = require("./service");
 const Admin = require("./admin");
 
 console.log("Server Starting...");
+console.log("MongoDB URI:", MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@"));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/digital_platform")
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+// MongoDB Connection with options
+mongoose.connect(MONGODB_URI, {
+  serverSelectionTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+})
+.then(() => console.log("✅ MongoDB Connected"))
+.catch(err => {
+  console.error("❌ MongoDB Connection Failed:", err.message);
+  console.error("Please set MONGODB_URI environment variable.");
+});
+
+// Check MongoDB connection state
+function dbReady(req, res, next) {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: "Database not connected. Please check server logs." });
+  }
+  next();
+}
+
+// ================== HEALTH CHECK ==================
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    dbState: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ================== AUTH ROUTES ==================
+
+app.post("/signup", dbReady, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required ❌" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: "User already exists ❌" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
+    await user.save();
+    res.json({ message: "User Registered ✅" });
+  } catch (err) {
+    console.error("Signup error:", err.message);
+    res.status(500).json({ message: "Server error: " + err.message });
+  }
+});
+
+app.post("/login", dbReady, async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required ❌" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found ❌" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      const token = jwt.sign({ userId: user._id, name: user.name, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
+      res.json({ message: "Login Successful ✅", token: token, name: user.name });
+    } else {
+      res.status(400).json({ message: "Wrong Password ❌" });
+    }
+  } catch (err) {
+    console.error("Login error:", err.message);
+    res.status(500).json({ message: "Server error: " + err.message });
+  }
+});
 
 // Middleware to verify JWT
 function authMiddleware(req, res, next) {
@@ -67,46 +143,9 @@ function adminMiddleware(req, res, next) {
   }
 }
 
-// ================== AUTH ROUTES ==================
-
-app.post("/signup", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "User already exists ❌" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
-    await user.save();
-    res.json({ message: "User Registered ✅" });
-  } catch (err) {
-    console.error("Signup error:", err);
-    res.status(500).json({ message: "Server error ❌" });
-  }
-});
-
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found ❌" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      const token = jwt.sign({ userId: user._id, name: user.name, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
-      res.json({ message: "Login Successful ✅", token: token, name: user.name });
-    } else {
-      res.status(400).json({ message: "Wrong Password ❌" });
-    }
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ message: "Server error ❌" });
-  }
-});
-
 // ================== ADMIN ROUTES ==================
 
-app.post("/admin/login", async (req, res) => {
+app.post("/admin/login", dbReady, async (req, res) => {
   try {
     const { email, password } = req.body;
     const admin = await Admin.findOne({ email });
@@ -120,7 +159,8 @@ app.post("/admin/login", async (req, res) => {
       res.status(400).json({ message: "Wrong Password" });
     }
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Admin login error:", err.message);
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -139,7 +179,8 @@ app.get("/admin/stats", adminMiddleware, async (req, res) => {
       recentContacts
     });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Admin stats error:", err.message);
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -148,7 +189,7 @@ app.get("/admin/users", adminMiddleware, async (req, res) => {
     const users = await User.find().select("-password");
     res.json({ users });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -157,7 +198,7 @@ app.get("/admin/payments", adminMiddleware, async (req, res) => {
     const payments = await Payment.find().populate("userId", "name email");
     res.json({ payments });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -172,8 +213,8 @@ app.get("/dashboard", authMiddleware, async (req, res) => {
 
     res.json({ user, services, payments, notifications });
   } catch (err) {
-    console.error("Dashboard error:", err);
-    res.status(500).json({ message: "Server error ❌" });
+    console.error("Dashboard error:", err.message);
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -190,7 +231,6 @@ app.post("/service", authMiddleware, async (req, res) => {
     });
     await service.save();
 
-    // Create notification
     const notification = new Notification({
       userId: req.user.userId,
       title: "New Service Request",
@@ -201,7 +241,7 @@ app.post("/service", authMiddleware, async (req, res) => {
 
     res.json({ message: "Service request submitted ✅", service });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -210,7 +250,7 @@ app.get("/services", authMiddleware, async (req, res) => {
     const services = await Service.find({ userId: req.user.userId }).sort({ _id: -1 });
     res.json({ services });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -231,7 +271,6 @@ app.post("/payment", authMiddleware, async (req, res) => {
     });
     await payment.save();
 
-    // Create notification
     const notification = new Notification({
       userId: req.user.userId,
       title: "Payment Successful",
@@ -242,7 +281,7 @@ app.post("/payment", authMiddleware, async (req, res) => {
 
     res.json({ message: "Payment successful ✅", transactionId, payment });
   } catch (err) {
-    res.status(500).json({ message: "Payment failed ❌" });
+    res.status(500).json({ message: "Payment failed: " + err.message });
   }
 });
 
@@ -251,7 +290,7 @@ app.get("/payments", authMiddleware, async (req, res) => {
     const payments = await Payment.find({ userId: req.user.userId }).sort({ _id: -1 });
     res.json({ payments });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -264,7 +303,7 @@ app.post("/contact", async (req, res) => {
     await contact.save();
     res.json({ message: "Message sent successfully ✅" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to send message ❌" });
+    res.status(500).json({ message: "Failed to send message: " + err.message });
   }
 });
 
@@ -275,7 +314,7 @@ app.get("/notifications", authMiddleware, async (req, res) => {
     const notifications = await Notification.find({ userId: req.user.userId }).sort({ _id: -1 }).limit(10);
     res.json({ notifications });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -284,7 +323,7 @@ app.put("/notifications/:id/read", authMiddleware, async (req, res) => {
     await Notification.findByIdAndUpdate(req.params.id, { read: true });
     res.json({ message: "Notification marked as read" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
@@ -313,7 +352,7 @@ app.post("/chatbot", async (req, res) => {
 
     res.json({ reply });
   } catch (err) {
-    res.status(500).json({ message: "Chatbot error" });
+    res.status(500).json({ message: "Chatbot error: " + err.message });
   }
 });
 
@@ -346,8 +385,15 @@ app.get("/plans", async (req, res) => {
   });
 });
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error" });
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

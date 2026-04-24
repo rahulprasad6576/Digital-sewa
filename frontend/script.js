@@ -24,9 +24,11 @@ async function login() {
       alert(data.message);
       location.href = "dashboard.html";
     } else {
-      alert(data.message);
+      alert(data.message || "Login failed");
     }
   } catch (err) {
-    alert("Error: " + err.message);
+    alert("Network error: Cannot connect to server. Please try again later.");
+    console.error("Login fetch error:", err);
   }
 }
+
