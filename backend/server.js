@@ -39,7 +39,9 @@ const Service = require("./service");
 const Admin = require("./admin");
 
 console.log("Server Starting...");
-console.log("MongoDB URI:", MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@"));
+const maskedUri = MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@");
+console.log("MongoDB URI:", maskedUri);
+console.log("MONGODB_URI env present:", !!process.env.MONGODB_URI);
 
 // MongoDB Connection with options
 mongoose.connect(MONGODB_URI, {
@@ -48,8 +50,19 @@ mongoose.connect(MONGODB_URI, {
 })
 .then(() => console.log("✅ MongoDB Connected"))
 .catch(err => {
-  console.error("❌ MongoDB Connection Failed:", err.message);
+  console.error("❌ MongoDB Connection Failed:");
+  console.error("Error name:", err.name);
+  console.error("Error message:", err.message);
+  console.error("Error code:", err.code);
   console.error("Please set MONGODB_URI environment variable.");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB runtime error:", err.message);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.error("MongoDB disconnected!");
 });
 
 // Check MongoDB connection state
@@ -65,8 +78,36 @@ app.get("/health", (req, res) => {
   res.json({
     status: "ok",
     dbState: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongoUriPresent: !!process.env.MONGODB_URI,
     timestamp: new Date().toISOString()
   });
+});
+
+// ================== DB DIAGNOSTICS ==================
+app.get("/debug/db", async (req, res) => {
+  try {
+    const testConn = await mongoose.createConnection(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+    }).asPromise();
+    await testConn.close();
+    res.json({
+      mongodbUriPresent: !!process.env.MONGODB_URI,
+      connectionTest: "success",
+      currentReadyState: mongoose.connection.readyState,
+      readyStateLabels: ["disconnected", "connected", "connecting", "disconnecting"]
+    });
+  } catch (err) {
+    res.json({
+      mongodbUriPresent: !!process.env.MONGODB_URI,
+      connectionTest: "failed",
+      errorName: err.name,
+      errorMessage: err.message,
+      errorCode: err.code,
+      currentReadyState: mongoose.connection.readyState,
+      readyStateLabels: ["disconnected", "connected", "connecting", "disconnecting"],
+      hint: "Common fixes: (1) Check MONGODB_URI in Render Environment, (2) URL-encode special chars in password, (3) Whitelist 0.0.0.0/0 in Atlas Network Access, (4) Ensure Atlas cluster is active"
+    });
+  }
 });
 
 // ================== AUTH ROUTES ==================
