@@ -134,7 +134,7 @@
 
     async function loadStats() {
       try {
-        const res = await fetch("http://localhost:5000/admin/stats", {
+        const res = await fetch("/admin/stats", {
           headers: { "Authorization": adminToken || "demo-admin-token" }
         });
         if (!res.ok) {

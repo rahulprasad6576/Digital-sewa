@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "";
 
 async function signup() {
   const name = document.getElementById("name").value;

@@ -3,12 +3,17 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const path = require("path");
 
 const app = express();
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : ["http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:5500", "http://127.0.0.1:5500"];
+
 app.use(cors({
-  origin: ["http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:5500", "http://127.0.0.1:5500"],
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -16,7 +21,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-const JWT_SECRET = "mysecretkey123";
+const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey123";
 
 // Import Models
 const User = require("./user");
@@ -29,7 +34,7 @@ const Admin = require("./admin");
 console.log("Server Starting...");
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/digital_platform")
+mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/digital_platform")
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
 
@@ -342,6 +347,7 @@ app.get("/plans", async (req, res) => {
 });
 
 // Start Server
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

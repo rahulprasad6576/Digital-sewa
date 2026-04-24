@@ -129,7 +129,7 @@
       const upiId = document.getElementById("upiId").value;
 
       try {
-        const res = await fetch("http://localhost:5000/payment", {
+        const res = await fetch("/payment", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": token },
           body: JSON.stringify({ amount: parseInt(amount), service, upiId })
@@ -146,7 +146,7 @@
 
     async function loadPayments() {
       try {
-        const res = await fetch("http://localhost:5000/payments", {
+        const res = await fetch("/payments", {
           headers: { "Authorization": token }
         });
         const data = await res.json();

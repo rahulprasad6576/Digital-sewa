@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 const Admin = require("./admin");
 
 async function seed() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/digital_platform");
+  await mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/digital_platform");
 
   const existing = await Admin.findOne({ email: "admin@digitalseva.com" });
   if (!existing) {
