@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .payment-page { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
+    .payment-form { background: var(--card-bg); padding: 35px; border-radius: 20px; box-shadow: var(--shadow); }
+    .amount-display { font-size: 2rem; color: var(--primary); font-weight: 700; text-align: center; margin: 20px 0; }
+    .upi-display { background: var(--bg); padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; }
+    .upi-id { font-size: 1.3rem; font-weight: 600; color: var(--primary); letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-user">
+      <a href="dashboard.html" style="color: var(--text); text-decoration: none;">Dashboard</a>
+      <button onclick="toggleLang()" class="lang-switch" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+      <button onclick="logout()" style="background: var(--error); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Logout</button>
+    </div>
+  </nav>
+
+  <div class="payment-page">
+    <h1 style="text-align: center; color: var(--text); margin-bottom: 25px;" data-key="paymentTitle">Make Payment</h1>
+    
+    <div class="payment-form">
+      <div class="input-group">
+        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="serviceLabel">Service</label>
+        <select id="serviceSelect" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+          <option value="pan">PAN Card Service</option>
+          <option value="aadhaar">Aadhaar Service</option>
+          <option value="electricity">Electricity Bill</option>
+          <option value="water">Water Bill</option>
+          <option value="mobile">Mobile Recharge</option>
+          <option value="dth">DTH Recharge</option>
+          <option value="gas">Gas Booking</option>
+          <option value="train">Train Booking</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="amountLabel">Amount (₹)</label>
+        <input id="amount" type="number" value="100" min="1" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+      </div>
+
+      <div class="upi-display">
+        <p style="color: var(--text-light); margin-bottom: 10px;" data-key="payVia">Pay via UPI</p>
+        <div class="upi-id">digitalseva@upi</div>
+        <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 10px;" data-key="demoMode">Demo Mode - No real money deducted</p>
+      </div>
+
+      <div class="input-group">
+        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="upiIdLabel">Your UPI ID (Optional)</label>
+        <input id="upiId" type="text" placeholder="yourname@upi" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+      </div>
+
+      <button class="btn" onclick="makePayment()" data-key="payNow">Pay Now</button>
+      <p id="paymentResult" style="margin-top: 15px; text-align: center;"></p>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <h3 style="color: var(--text); margin-bottom: 15px;" data-key="recentPayments">Recent Payments</h3>
+      <div id="paymentList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        paymentTitle: "Make Payment",
+        serviceLabel: "Service",
+        amountLabel: "Amount (₹)",
+        payVia: "Pay via UPI",
+        demoMode: "Demo Mode - No real money deducted",
+        upiIdLabel: "Your UPI ID (Optional)",
+        payNow: "Pay Now",
+        recentPayments: "Recent Payments",
+        paymentSuccess: "Payment Successful! Transaction ID: "
+      },
+      hi: {
+        paymentTitle: "भुगतान करें",
+        serviceLabel: "सेवा",
+        amountLabel: "राशि (₹)",
+        payVia: "यूपीआई से भुगतान करें",
+        demoMode: "डेमो मोड - कोई असली पैसा नहीं कटेगा",
+        upiIdLabel: "आपका यूपीआई आईडी (वैकल्पिक)",
+        payNow: "अभी भुगतान करें",
+        recentPayments: "हाल के भुगतान",
+        paymentSuccess: "भुगतान सफल! ट्रांजैक्शन आईडी: "
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+    const token = localStorage.getItem("token");
+
+    if (!token) location.href = "login.html";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+      location.href = "index.html";
+    }
+
+    async function makePayment() {
+      const service = document.getElementById("serviceSelect").value;
+      const amount = document.getElementById("amount").value;
+      const upiId = document.getElementById("upiId").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ amount: parseInt(amount), service, upiId })
+        });
+        const data = await res.json();
+        document.getElementById("paymentResult").textContent = data.message;
+        document.getElementById("paymentResult").style.color = "var(--success)";
+        loadPayments();
+      } catch (err) {
+        document.getElementById("paymentResult").textContent = "Payment failed";
+        document.getElementById("paymentResult").style.color = "var(--error)";
+      }
+    }
+
+    async function loadPayments() {
+      try {
+        const res = await fetch("http://localhost:5000/payments", {
+          headers: { "Authorization": token }
+        });
+        const data = await res.json();
+        const list = document.getElementById("paymentList");
+        list.innerHTML = "";
+        data.payments.forEach(p => {
+          const div = document.createElement("div");
+          div.style.cssText = "background: var(--card-bg); padding: 15px; border-radius: 10px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;";
+          div.innerHTML = `
+            <div>
+              <strong style="color: var(--text);">${p.service}</strong>
+              <div style="color: var(--text-light); font-size: 0.85rem;">${new Date(p.createdAt).toLocaleDateString()}</div>
+            <div style="text-align: right;">
+              <div style="color: var(--primary); font-weight: 600;">₹${p.amount}</div>
+              <div style="color: ${p.status === 'completed' ? 'var(--success)' : 'var(--warning)'}; font-size: 0.8rem;">${p.status}</div>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+    loadPayments();
+  </script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Seva - One Stop Digital Services</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .homepage-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .homepage-nav .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    .homepage-nav .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.3s;
+    }
+    .homepage-nav .nav-links a:hover {
+      opacity: 0.8;
+    }
+    .stats-bar {
+      background: var(--card-bg);
+      padding: 40px 20px;
+      transition: background 0.3s;
+    }
+    .stats-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-item .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .stat-item .label {
+      color: var(--text-light);
+      margin-top: 5px;
+    }
+    .how-it-works {
+      background: var(--bg);
+      padding: 60px 20px;
+      transition: background 0.3s;
+    }
+    .steps {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .step {
+      text-align: center;
+      padding: 20px;
+    }
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 auto 15px;
+    }
+    .testimonials {
+      background: var(--card-bg);
+      padding: 60px 20px;
+      transition: background 0.3s;
+    }
+    .testimonial-grid {
+      max-width: 1000px;
+      margin: 30px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    .testimonial-card {
+      background: var(--bg);
+      padding: 25px;
+      border-radius: 15px;
+      transition: background 0.3s;
+    }
+    .testimonial-card .stars {
+      color: #ffc107;
+      margin-bottom: 10px;
+    }
+    .testimonial-card p {
+      color: var(--text-light);
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+    .testimonial-card .author {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 80px 20px;
+      text-align: center;
+      color: white;
+    }
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+    .cta-section p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+    .homepage-footer {
+      background: var(--card-bg);
+      padding: 50px 20px 20px;
+      transition: background 0.3s;
+    }
+    .footer-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .footer-col h4 {
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+    .footer-col a {
+      display: block;
+      color: var(--text-light);
+      text-decoration: none;
+      padding: 5px 0;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover {
+      color: var(--primary);
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="homepage">
+    <nav class="homepage-nav">
+      <div class="nav-brand" style="color: white;">🚀 Digital Seva</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="plans.html">Plans</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html" class="cta-btn primary" style="padding: 8px 25px; font-size: 0.9rem;">Login</a>
+        <button class="lang-switch" onclick="toggleLang()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1 data-key="heroTitle">Digital Services Made Simple</h1>
+        <p data-key="heroSubtitle">PAN Card, Aadhaar, Bills, Recharge & more - all in one place</p>
+        <div class="cta-buttons">
+          <a href="signup.html" class="cta-btn primary" data-key="getStarted">Get Started</a>
+          <a href="about.html" class="cta-btn secondary" data-key="learnMore">Learn More</a>
+        </div>
+    </section>
+  </div>
+
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="number">10K+</div>
+        <div class="label" data-key="happyUsers">Happy Users</div>
+      <div class="stat-item">
+        <div class="number">50K+</div>
+        <div class="label" data-key="servicesDone">Services Done</div>
+      <div class="stat-item">
+        <div class="number">8+</div>
+        <div class="label" data-key="digitalServices">Digital Services</div>
+      <div class="stat-item">
+        <div class="number">98%</div>
+        <div class="label" data-key="satisfaction">Satisfaction</div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <h2 style="text-align: center; margin-bottom: 10px; color: var(--text);" data-key="ourFeatures">Our Features</h2>
+    <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;" data-key="featuresSubtitle">Everything you need in one platform</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🆔</div>
+        <h3 data-key="feature1">PAN Card Services</h3>
+        <p data-key="feature1Desc">Apply, update or track your PAN card status easily</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🪪</div>
+        <h3 data-key="feature2">Aadhaar Services</h3>
+        <p data-key="feature2Desc">Update, download or verify your Aadhaar</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h3 data-key="feature3">Bill Payments</h3>
+        <p data-key="feature3Desc">Electricity, water & other utility bills online</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3 data-key="feature4">Mobile & DTH</h3>
+        <p data-key="feature4Desc">Recharge mobile and DTH instantly</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3 data-key="feature5">Gas Booking</h3>
+        <p data-key="feature5Desc">Book LPG cylinders online</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚆</div>
+        <h3 data-key="feature6">Train Booking</h3>
+        <p data-key="feature6Desc">Book train tickets easily</p>
+      </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2 style="text-align: center; color: var(--text);" data-key="howItWorks">How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4 data-key="step1">Sign Up</h4>
+        <p data-key="step1Desc">Create your free account in seconds</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4 data-key="step2">Choose Service</h4>
+        <p data-key="step2Desc">Select from 8+ digital services</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4 data-key="step3">Pay Online</h4>
+        <p data-key="step3Desc">Secure UPI payment</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4 data-key="step4">Get Done!</h4>
+        <p data-key="step4Desc">Service processed quickly</p>
+      </div>
+  </section>
+
+  <section class="testimonials">
+    <h2 style="text-align: center; color: var(--text);" data-key="testimonials">What Users Say</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p data-key="review1">"Digital Seva made my PAN card application so easy. Highly recommended!"</p>
+        <div class="author">- Rahul K.</div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p data-key="review2">"I recharge my mobile and pay bills from one place. Very convenient."</p>
+        <div class="author">- Priya S.</div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p data-key="review3">"Hindi support is amazing. My parents can use it easily now."</p>
+        <div class="author">- Amit M.</div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2 data-key="ready">Ready to Get Started?</h2>
+    <p data-key="joinThousands">Join thousands of users simplifying their digital life</p>
+    <a href="signup.html" class="cta-btn primary" style="display: inline-block;" data-key="signupNow">Sign Up Now - It's Free</a>
+  </section>
+
+  <footer class="homepage-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>🚀 Digital Seva</h4>
+        <p style="color: var(--text-light); font-size: 0.9rem;">Making digital services accessible to every Indian citizen.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-key="quickLinks">Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="plans.html">Plans</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-key="services">Services</h4>
+        <a href="dashboard.html">PAN Card</a>
+        <a href="dashboard.html">Aadhaar</a>
+        <a href="dashboard.html">Bill Payments</a>
+        <a href="dashboard.html">Recharge</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-key="legal">Legal</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="privacy.html">Terms of Service</a>
+        <a href="privacy.html">Security</a>
+      </div>
+    <div class="footer-bottom">
+      <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Chatbot -->
+  <div class="chatbot-widget">
+    <div class="chatbot-box" id="chatbotBox">
+      <div class="chatbot-header">
+        <span>🤖 Digital Seva Assistant</span>
+        <button onclick="toggleChatbot()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="message bot">Hello! I'm your Digital Seva assistant. How can I help you today?</div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatbotMessage()">
+        <button onclick="sendChatbotMessage()">➤</button>
+      </div>
+    <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        heroTitle: "Digital Services Made Simple",
+        heroSubtitle: "PAN Card, Aadhaar, Bills, Recharge & more - all in one place",
+        getStarted: "Get Started",
+        learnMore: "Learn More",
+        happyUsers: "Happy Users",
+        servicesDone: "Services Done",
+        digitalServices: "Digital Services",
+        satisfaction: "Satisfaction",
+        ourFeatures: "Our Features",
+        featuresSubtitle: "Everything you need in one platform",
+        feature1: "PAN Card Services",
+        feature1Desc: "Apply, update or track your PAN card status easily",
+        feature2: "Aadhaar Services",
+        feature2Desc: "Update, download or verify your Aadhaar",
+        feature3: "Bill Payments",
+        feature3Desc: "Electricity, water & other utility bills online",
+        feature4: "Mobile & DTH",
+        feature4Desc: "Recharge mobile and DTH instantly",
+        feature5: "Gas Booking",
+        feature5Desc: "Book LPG cylinders online",
+        feature6: "Train Booking",
+        feature6Desc: "Book train tickets easily",
+        howItWorks: "How It Works",
+        step1: "Sign Up",
+        step1Desc: "Create your free account in seconds",
+        step2: "Choose Service",
+        step2Desc: "Select from 8+ digital services",
+        step3: "Pay Online",
+        step3Desc: "Secure UPI payment",
+        step4: "Get Done!",
+        step4Desc: "Service processed quickly",
+        testimonials: "What Users Say",
+        review1: "Digital Seva made my PAN card application so easy. Highly recommended!",
+        review2: "I recharge my mobile and pay bills from one place. Very convenient.",
+        review3: "Hindi support is amazing. My parents can use it easily now.",
+        ready: "Ready to Get Started?",
+        joinThousands: "Join thousands of users simplifying their digital life",
+        signupNow: "Sign Up Now - It's Free",
+        quickLinks: "Quick Links",
+        services: "Services",
+        legal: "Legal",
+        rights: "All rights reserved."
+      },
+      hi: {
+        heroTitle: "डिजिटल सेवाएं आसान बनीं",
+        heroSubtitle: "पैन कार्ड, आधार, बिल, रिचार्ज और बहुत कुछ - एक ही जगह",
+        getStarted: "शुरू करें",
+        learnMore: "और जानें",
+        happyUsers: "खुश उपयोगकर्ता",
+        servicesDone: "सेवाएं की गईं",
+        digitalServices: "डिजिटल सेवाएं",
+        satisfaction: "संतुष्टि",
+        ourFeatures: "हमारी विशेषताएं",
+        featuresSubtitle: "एक प्लेटफॉर्म में सब कुछ",
+        feature1: "पैन कार्ड सेवाएं",
+        feature1Desc: "पैन कार्ड आवेदन, अपडेट या स्टेटस ट्रैक करें",
+        feature2: "आधार सेवाएं",
+        feature2Desc: "आधार अपडेट, डाउनलोड या वेरिफाई करें",
+        feature3: "बिल भुगतान",
+        feature3Desc: "बिजली, पानी और अन्य यूटिलिटी बिल ऑनलाइन",
+        feature4: "मोबाइल और डीटीएच",
+        feature4Desc: "मोबाइल और डीटीएच तुरंत रिचार्ज करें",
+        feature5: "गैस बुकिंग",
+        feature5Desc: "एलपीजी सिलेंडर ऑनलाइन बुक करें",
+        feature6: "ट्रेन बुकिंग",
+        feature6Desc: "ट्रेन टिकट आसानी से बुक करें",
+        howItWorks: "यह कैसे काम करता है",
+        step1: "साइन अप",
+        step1Desc: "सेकंड में अपना मुफ्त खाता बनाएं",
+        step2: "सेवा चुनें",
+        step2Desc: "8+ डिजिटल सेवाओं में से चुनें",
+        step3: "ऑनलाइन भुगतान",
+        step3Desc: "सुरक्षित यूपीआई भुगतान",
+        step4: "हो गया!",
+        step4Desc: "सेवा जल्दी प्रोसेस होगी",
+        testimonials: "उपयोगकर्ता क्या कहते हैं",
+        review1: "डिजिटल सेवा ने मेरा पैन कार्ड आवेदन बहुत आसान बना दिया। बहुत बढ़िया!",
+        review2: "मैं एक ही जगह से मोबाइल रिचार्ज और बिल भुगतान करता हूं। बहुत सुविधाजनक।",
+        review3: "हिंदी सपोर्ट बहुत अच्छा है। मेरे माता-पिता अब इसे आसानी से उपयोग कर सकते हैं।",
+        ready: "शुरू करने के लिए तैयार हैं?",
+        joinThousands: "हजारों उपयोगकर्ताओं के साथ अपनी डिजिटल जीवन सरल बनाएं",
+        signupNow: "अभी साइन अप करें - यह मुफ्त है",
+        quickLinks: "त्वरित लिंक",
+        services: "सेवाएं",
+        legal: "कानूनी",
+        rights: "सर्वाधिकार सुरक्षित।"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleChatbot() {
+      document.getElementById("chatbotBox").classList.toggle("active");
+    }
+
+    async function sendChatbotMessage() {
+      const input = document.getElementById("chatbotInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const messagesDiv = document.getElementById("chatbotMessages");
+      messagesDiv.innerHTML += `<div class="message user">${msg}</div>`;
+      input.value = "";
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      try {
+        const res = await fetch("http://localhost:5000/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        messagesDiv.innerHTML += `<div class="message bot">${data.reply}</div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (err) {
+        messagesDiv.innerHTML += `<div class="message bot">Sorry, I'm having trouble connecting. Please try again.</div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>

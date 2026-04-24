@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+  <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;">
+    <button class="lang-switch" onclick="toggleLang()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+    <button onclick="toggleDarkMode()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 1.2rem;">🌙</button>
+  </div>
+
+  <a href="index.html" style="position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-size: 1.2rem; font-weight: 600;">← Home</a>
+
+  <div class="auth-container">
+    <div class="logo">
+      <h1>🚀 Digital Seva</h1>
+      <p data-key="tagline">Logon ko digital services easy banana</p>
+    </div>
+    <h2 data-key="signupTitle">Sign Up</h2>
+    <div class="input-group">
+      <input id="name" type="text" placeholder="Enter Name" data-key-placeholder="namePlaceholder">
+    </div>
+    <div class="input-group">
+      <input id="email" type="email" placeholder="Enter Email" data-key-placeholder="emailPlaceholder">
+    </div>
+    <div class="input-group">
+      <input id="password" type="password" placeholder="Enter Password" data-key-placeholder="passwordPlaceholder">
+    </div>
+    <div class="input-group">
+      <input id="confirmPassword" type="password" placeholder="Confirm Password" data-key-placeholder="confirmPlaceholder">
+    </div>
+    <button class="btn" onclick="signup()" data-key="signupBtn">Sign Up</button>
+    <div class="link">
+      <span data-key="hasAccount">Already have an account?</span> <a href="login.html" data-key="loginLink">Login</a>
+    </div>
+
+  <script>
+    const translations = {
+      en: {
+        tagline: "Logon ko digital services easy banana",
+        signupTitle: "Sign Up",
+        namePlaceholder: "Enter Name",
+        emailPlaceholder: "Enter Email",
+        passwordPlaceholder: "Enter Password",
+        confirmPlaceholder: "Confirm Password",
+        signupBtn: "Sign Up",
+        hasAccount: "Already have an account?",
+        loginLink: "Login"
+      },
+      hi: {
+        tagline: "लोगों को डिजिटल सेवाएं आसान बनाना",
+        signupTitle: "साइन अप",
+        namePlaceholder: "नाम दर्ज करें",
+        emailPlaceholder: "ईमेल दर्ज करें",
+        passwordPlaceholder: "पासवर्ड दर्ज करें",
+        confirmPlaceholder: "पासवर्ड की पुष्टि करें",
+        signupBtn: "साइन अप",
+        hasAccount: "पहले से खाता है?",
+        loginLink: "लॉगिन"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelectorAll("[data-key-placeholder]").forEach(el => {
+        el.placeholder = t[el.dataset.keyPlaceholder];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    async function signup() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (!name || !email || !password) {
+        alert(currentLang === "hi" ? "कृपया सभी फ़ील्ड भरें" : "Please fill all fields");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert(currentLang === "hi" ? "पासवर्ड मेल नहीं खाते" : "Passwords do not match");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        alert(data.message);
+        if (res.ok) location.href = "login.html";
+      } catch (err) {
+        alert(currentLang === "hi" ? "त्रुटि! कृपया पुनः प्रयास करें।" : "Error! Please try again.");
+      }
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>

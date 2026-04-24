@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy & Security - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .privacy-hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .privacy-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 50px 20px;
+    }
+    .privacy-section {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    .privacy-section h3 {
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .privacy-section p {
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg);
+      padding: 10px 20px;
+      border-radius: 25px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+      <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
+      <a href="about.html" style="color: var(--text); text-decoration: none;">About</a>
+      <a href="plans.html" style="color: var(--text); text-decoration: none;">Plans</a>
+      <a href="contact.html" style="color: var(--text); text-decoration: none;">Contact</a>
+      <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
+      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+    </div>
+  </nav>
+
+  <section class="privacy-hero">
+    <h1 data-key="privacyTitle">Privacy & Security</h1>
+    <p data-key="privacySubtitle">Your data is safe with us</p>
+  </section>
+
+  <div class="privacy-content">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <span class="security-badge">🔒 SSL Encrypted</span>
+      <span class="security-badge">🛡️ GDPR Compliant</span>
+      <span class="security-badge">✅ ISO 27001</span>
+      <span class="security-badge">🇮🇳 DPDP Act Ready</span>
+    </div>
+
+    <div class="privacy-section">
+      <h3 data-key="dataProtection">Data Protection</h3>
+      <p data-key="dataProtectionText">We use industry-standard encryption (AES-256) to protect your personal information. All data is stored in secure servers within India and is never shared with third parties without your consent.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h3 data-key="securePayments">Secure Payments</h3>
+      <p data-key="securePaymentsText">All payment transactions are processed through PCI-DSS compliant gateways. We do not store your UPI PIN or card details on our servers.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h3 data-key="userControl">User Control</h3>
+      <p data-key="userControlText">You have full control over your data. You can request a copy of your data, update it, or delete your account at any time through your dashboard settings.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h3 data-key="transparency">Transparency</h3>
+      <p data-key="transparencyText">We clearly communicate how your data is used. No hidden tracking, no selling of data. We only use your information to provide and improve our services.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h3 data-key="securityMeasures">Security Measures</h3>
+      <p data-key="securityMeasuresText">Our platform includes: Two-factor authentication, automatic session timeout, suspicious activity alerts, regular security audits, and 24/7 monitoring.</p>
+    </div>
+
+  <footer style="background: var(--card-bg); padding: 30px; text-align: center; color: var(--text-light);">
+    <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        privacyTitle: "Privacy & Security",
+        privacySubtitle: "Your data is safe with us",
+        dataProtection: "Data Protection",
+        dataProtectionText: "We use industry-standard encryption (AES-256) to protect your personal information. All data is stored in secure servers within India and is never shared with third parties without your consent.",
+        securePayments: "Secure Payments",
+        securePaymentsText: "All payment transactions are processed through PCI-DSS compliant gateways. We do not store your UPI PIN or card details on our servers.",
+        userControl: "User Control",
+        userControlText: "You have full control over your data. You can request a copy of your data, update it, or delete your account at any time through your dashboard settings.",
+        transparency: "Transparency",
+        transparencyText: "We clearly communicate how your data is used. No hidden tracking, no selling of data. We only use your information to provide and improve our services.",
+        securityMeasures: "Security Measures",
+        securityMeasuresText: "Our platform includes: Two-factor authentication, automatic session timeout, suspicious activity alerts, regular security audits, and 24/7 monitoring.",
+        rights: "All rights reserved."
+      },
+      hi: {
+        privacyTitle: "गोपनीयता और सुरक्षा",
+        privacySubtitle: "आपका डेटा हमारे साथ सुरक्षित है",
+        dataProtection: "डेटा सुरक्षा",
+        dataProtectionText: "हम आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए उद्योग-मानक एन्क्रिप्शन (AES-256) का उपयोग करते हैं। सभी डेटा भारत के सुरक्षित सर्वर में संग्रहीत है और आपकी सहमति के बिना कभी तीसरे पक्ष के साथ साझा नहीं किया जाता।",
+        securePayments: "सुरक्षित भुगतान",
+        securePaymentsText: "सभी भुगतान लेनदेन PCI-DSS अनुपालन गेटवे के माध्यम से संसाधित किए जाते हैं। हम आपके यूपीआई पिन या कार्ड विवरण अपने सर्वर पर संग्रहीत नहीं करते।",
+        userControl: "उपयोगकर्ता नियंत्रण",
+        userControlText: "आपके पास अपने डेटा पर पूर्ण नियंत्रण है। आप किसी भी समय अपने डैशबोर्ड सेटिंग्स के माध्यम से अपने डेटा की कॉपी का अनुरोध कर सकते हैं, उसे अपडेट कर सकते हैं, या अपना खाता हटा सकते हैं।",
+        transparency: "पारदर्शिता",
+        transparencyText: "हम स्पष्ट रूप से संवाद करते हैं कि आपका डेटा कैसे उपयोग किया जाता है। कोई छिपी ट्रैकिंग नहीं, कोई डेटा बेचना नहीं। हम केवल आपकी जानकारी का उपयोग हमारी सेवाएं प्रदान करने और सुधारने के लिए करते हैं।",
+        securityMeasures: "सुरक्षा उपाय",
+        securityMeasuresText: "हमारा प्लेटफॉर्म शामिल है: दो-कारक प्रमाणीकरण, स्वचालित सत्र समयबाह्य, संदिग्ध गतिविधि अलर्ट, नियमित सुरक्षा ऑडिट, और 24/7 निगरानी।",
+        rights: "सर्वाधिकार सुरक्षित।"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plans - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .plans-hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .plans-hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+    .plans-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 50px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      align-items: start;
+    }
+    .revenue-section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+      <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
+      <a href="about.html" style="color: var(--text); text-decoration: none;">About</a>
+      <a href="plans.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Plans</a>
+      <a href="contact.html" style="color: var(--text); text-decoration: none;">Contact</a>
+      <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
+      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+    </div>
+  </nav>
+
+  <section class="plans-hero">
+    <h1 data-key="plansTitle">Choose Your Plan</h1>
+    <p data-key="plansSubtitle">Flexible pricing for everyone</p>
+  </section>
+
+  <div class="plans-container">
+    <div class="plan-card">
+      <h3 data-key="basic">Basic</h3>
+      <div class="plan-price">Free</div>
+      <p style="color: var(--text-light);" data-key="basicDesc">Perfect for getting started</p>
+      <ul class="plan-features">
+        <li data-key="basicF1">Access to all services</li>
+        <li data-key="basicF2">Email support</li>
+        <li data-key="basicF3">Basic notifications</li>
+        <li data-key="basicF4">Standard processing</li>
+      </ul>
+      <button class="btn" onclick="location.href='signup.html'" data-key="getStarted">Get Started</button>
+    </div>
+
+    <div class="plan-card featured">
+      <h3 data-key="premium">Premium</h3>
+      <div class="plan-price">₹99<span style="font-size: 1rem; color: var(--text-light);">/month</span></div>
+      <p style="color: var(--text-light);" data-key="premiumDesc">Best for regular users</p>
+      <ul class="plan-features">
+        <li data-key="premiumF1">Priority processing</li>
+        <li data-key="premiumF2">UPI payments</li>
+        <li data-key="premiumF3">Advanced notifications</li>
+        <li data-key="premiumF4">Chatbot support</li>
+        <li data-key="premiumF5">Dark mode access</li>
+      </ul>
+      <button class="btn" onclick="location.href='signup.html'" data-key="subscribe">Subscribe</button>
+    </div>
+
+    <div class="plan-card">
+      <h3 data-key="enterprise">Enterprise</h3>
+      <div class="plan-price">₹499<span style="font-size: 1rem; color: var(--text-light);">/month</span></div>
+      <p style="color: var(--text-light);" data-key="enterpriseDesc">For businesses & organizations</p>
+      <ul class="plan-features">
+        <li data-key="entF1">Bulk services</li>
+        <li data-key="entF2">Dedicated manager</li>
+        <li data-key="entF3">API access</li>
+        <li data-key="entF4">Custom integrations</li>
+        <li data-key="entF5">Voice support</li>
+      </ul>
+      <button class="btn" onclick="location.href='contact.html'" data-key="contactSales">Contact Sales</button>
+    </div>
+
+  <div class="revenue-section">
+    <h2 style="color: var(--primary); margin-bottom: 15px; text-align: center;" data-key="revenueTitle">Revenue Model</h2>
+    <p style="color: var(--text-light); text-align: center; margin-bottom: 30px;" data-key="revenueDesc">Transparent pricing with no hidden fees</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 2rem; margin-bottom: 10px;">💰</div>
+        <h4 data-key="commission">Commission</h4>
+        <p style="color: var(--text-light); font-size: 0.9rem;" data-key="commissionDesc">Small fee per transaction</p>
+      </div>
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 2rem; margin-bottom: 10px;">⭐</div>
+        <h4 data-key="subscription">Subscriptions</h4>
+        <p style="color: var(--text-light); font-size: 0.9rem;" data-key="subDesc">Monthly premium plans</p>
+      </div>
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 2rem; margin-bottom: 10px;">🤝</div>
+        <h4 data-key="partnerships">Partnerships</h4>
+        <p style="color: var(--text-light); font-size: 0.9rem;" data-key="partnershipDesc">Government & private tie-ups</p>
+      </div>
+  </div>
+
+  <footer style="background: var(--card-bg); padding: 30px; text-align: center; color: var(--text-light);">
+    <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        plansTitle: "Choose Your Plan",
+        plansSubtitle: "Flexible pricing for everyone",
+        basic: "Basic",
+        basicDesc: "Perfect for getting started",
+        basicF1: "Access to all services",
+        basicF2: "Email support",
+        basicF3: "Basic notifications",
+        basicF4: "Standard processing",
+        premium: "Premium",
+        premiumDesc: "Best for regular users",
+        premiumF1: "Priority processing",
+        premiumF2: "UPI payments",
+        premiumF3: "Advanced notifications",
+        premiumF4: "Chatbot support",
+        premiumF5: "Dark mode access",
+        enterprise: "Enterprise",
+        enterpriseDesc: "For businesses & organizations",
+        entF1: "Bulk services",
+        entF2: "Dedicated manager",
+        entF3: "API access",
+        entF4: "Custom integrations",
+        entF5: "Voice support",
+        getStarted: "Get Started",
+        subscribe: "Subscribe",
+        contactSales: "Contact Sales",
+        revenueTitle: "Revenue Model",
+        revenueDesc: "Transparent pricing with no hidden fees",
+        commission: "Commission",
+        commissionDesc: "Small fee per transaction",
+        subscription: "Subscriptions",
+        subDesc: "Monthly premium plans",
+        partnerships: "Partnerships",
+        partnershipDesc: "Government & private tie-ups",
+        rights: "All rights reserved."
+      },
+      hi: {
+        plansTitle: "अपनी योजना चुनें",
+        plansSubtitle: "सभी के लिए लचीला मूल्य निर्धारण",
+        basic: "बेसिक",
+        basicDesc: "शुरुआत के लिए बेहतरीन",
+        basicF1: "सभी सेवाओं की पहुंच",
+        basicF2: "ईमेल सहायता",
+        basicF3: "बुनियादी सूचनाएं",
+        basicF4: "मानक प्रोसेसिंग",
+        premium: "प्रीमियम",
+        premiumDesc: "नियमित उपयोगकर्ताओं के लिए बेस्ट",
+        premiumF1: "प्राथमिकता प्रोसेसिंग",
+        premiumF2: "यूपीआई भुगतान",
+        premiumF3: "उन्नत सूचनाएं",
+        premiumF4: "चैटबॉट सहायता",
+        premiumF5: "डार्क मोड पहुंच",
+        enterprise: "एंटरप्राइज़",
+        enterpriseDesc: "व्यवसायों और संगठनों के लिए",
+        entF1: "बल्क सेवाएं",
+        entF2: "समर्पित मैनेजर",
+        entF3: "एपीआई पहुंच",
+        entF4: "कस्टम एकीकरण",
+        entF5: "वॉयस सपोर्ट",
+        getStarted: "शुरू करें",
+        subscribe: "सब्सक्राइब",
+        contactSales: "सेल्स से संपर्क",
+        revenueTitle: "रेवेन्यू मॉडल",
+        revenueDesc: "कोई छिपा हुआ शुल्क नहीं",
+        commission: "कमीशन",
+        commissionDesc: "प्रति लेनदेन छोटी फीस",
+        subscription: "सब्सक्रिप्शन",
+        subDesc: "मासिक प्रीमियम योजनाएं",
+        partnerships: "भागीदारी",
+        partnershipDesc: "सरकारी और निजी टाई-अप",
+        rights: "सर्वाधिकार सुरक्षित।"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>

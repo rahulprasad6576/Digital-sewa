@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .about-hero h1 { font-size: 3rem; margin-bottom: 15px; }
+    .about-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    .vision-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .team-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    .team-avatar {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+    }
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .value-card {
+      background: var(--bg);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+    }
+    .value-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+      <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
+      <a href="about.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">About</a>
+      <a href="plans.html" style="color: var(--text); text-decoration: none;">Plans</a>
+      <a href="contact.html" style="color: var(--text); text-decoration: none;">Contact</a>
+      <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
+      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+    </div>
+  </nav>
+
+  <section class="about-hero">
+    <h1 data-key="aboutTitle">About Digital Seva</h1>
+    <p data-key="aboutSubtitle">Empowering every Indian with digital services</p>
+  </section>
+
+  <div class="about-content">
+    <div class="vision-box">
+      <h2 style="color: var(--primary); margin-bottom: 15px;" data-key="ourVision">Our Vision</h2>
+      <p style="color: var(--text-light); line-height: 1.8; font-size: 1.1rem;" data-key="visionText">
+        To make digital services accessible to every Indian citizen through a single, easy-to-use platform. We believe technology should simplify life, not complicate it.
+      </p>
+    </div>
+
+    <div class="vision-box">
+      <h2 style="color: var(--primary); margin-bottom: 15px;" data-key="ourMission">Our Mission</h2>
+      <p style="color: var(--text-light); line-height: 1.8; font-size: 1.1rem;" data-key="missionText">
+        Simplifying government and utility services with technology, transparency, and trust. We aim to bridge the digital divide and bring essential services to everyone's fingertips.
+      </p>
+    </div>
+
+    <h2 style="text-align: center; color: var(--text); margin-bottom: 10px;" data-key="ourValues">Our Values</h2>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="icon">🔒</div>
+        <h3 data-key="trust">Trust</h3>
+        <p data-key="trustDesc">Your data is secure with us</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">⚡</div>
+        <h3 data-key="speed">Speed</h3>
+        <p data-key="speedDesc">Fast service processing</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🤝</div>
+        <h3 data-key="support">Support</h3>
+        <p data-key="supportDesc">24/7 customer assistance</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">♿</div>
+        <h3 data-key="accessibility">Accessibility</h3>
+        <p data-key="accessibilityDesc">Services for everyone</p>
+      </div>
+
+    <h2 style="text-align: center; color: var(--text); margin: 40px 0 20px;" data-key="meetTeam">Meet Our Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👤</div>
+        <h4>Rahul Kumar</h4>
+        <p style="color: var(--text-light);">Founder & CEO</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👤</div>
+        <h4>Priya Sharma</h4>
+        <p style="color: var(--text-light);">CTO</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👤</div>
+        <h4>Amit Patel</h4>
+        <p style="color: var(--text-light);">Head of Operations</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👤</div>
+        <h4>Sneha Gupta</h4>
+        <p style="color: var(--text-light);">Customer Success</p>
+      </div>
+  </div>
+
+  <footer style="background: var(--card-bg); padding: 30px; text-align: center; color: var(--text-light);">
+    <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        aboutTitle: "About Digital Seva",
+        aboutSubtitle: "Empowering every Indian with digital services",
+        ourVision: "Our Vision",
+        visionText: "To make digital services accessible to every Indian citizen through a single, easy-to-use platform. We believe technology should simplify life, not complicate it.",
+        ourMission: "Our Mission",
+        missionText: "Simplifying government and utility services with technology, transparency, and trust. We aim to bridge the digital divide and bring essential services to everyone's fingertips.",
+        ourValues: "Our Values",
+        trust: "Trust",
+        trustDesc: "Your data is secure with us",
+        speed: "Speed",
+        speedDesc: "Fast service processing",
+        support: "Support",
+        supportDesc: "24/7 customer assistance",
+        accessibility: "Accessibility",
+        accessibilityDesc: "Services for everyone",
+        meetTeam: "Meet Our Team",
+        rights: "All rights reserved."
+      },
+      hi: {
+        aboutTitle: "डिजिटल सेवा के बारे में",
+        aboutSubtitle: "हर भारतीय को डिजिटल सेवाएं प्रदान करना",
+        ourVision: "हमारा दृष्टिकोण",
+        visionText: "एक सरल, उपयोग में आसान प्लेटफॉर्म के माध्यम से हर भारतीय नागरिक तक डिजिटल सेवाएं पहुंचाना। हम मानते हैं कि तकनीक जीवन को सरल बनानी चाहिए, जटिल नहीं।",
+        ourMission: "हमारा मिशन",
+        missionText: "तकनीक, पारदर्शिता और विश्वास के साथ सरकारी और यूटिलिटी सेवाओं को सरल बनाना। हमारा लक्ष्य डिजिटल खाई को पाटना और आवश्यक सेवाओं को सबकी पहुंच में लाना है।",
+        ourValues: "हमारे मूल्य",
+        trust: "विश्वास",
+        trustDesc: "आपका डेटा हमारे साथ सुरक्षित है",
+        speed: "गति",
+        speedDesc: "तेज सेवा प्रोसेसिंग",
+        support: "सहायता",
+        supportDesc: "24/7 ग्राहक सहायता",
+        accessibility: "पहुंच",
+        accessibilityDesc: "सबके लिए सेवाएं",
+        meetTeam: "हमारी टीम से मिलें",
+        rights: "सर्वाधिकार सुरक्षित।"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-user">
+      <span id="userName" style="color: var(--text); font-weight: 500;">User</span>
+      <div class="notification-bell" onclick="showNotifications()">
+        🔔
+        <span class="notification-badge" id="notifBadge" style="display: none;">0</span>
+      </div>
+      <select id="langSelect" onchange="changeLang(this.value)" style="background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem;">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="bn">বাংলা</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+      </select>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+      <button onclick="logout()" style="background: var(--error); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Logout</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="welcome">
+      <h1 data-key="welcome">Welcome to Digital Seva</h1>
+      <p style="color: var(--text-light);" data-key="chooseService">Choose a service to get started</p>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div id="notifPanel" style="display: none; background: var(--card-bg); border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: var(--shadow);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="color: var(--text);">Notifications</h3>
+        <button onclick="hideNotifications()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text);">✕</button>
+      </div>
+      <div id="notifList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div class="service-card" onclick="openService('pan')">
+        <div class="service-icon">🆔</div>
+        <h3 data-key="panCard">PAN Card</h3>
+        <p data-key="panDesc">Apply, update or track PAN</p>
+      </div>
+      <div class="service-card" onclick="openService('aadhaar')">
+        <div class="service-icon">🪪</div>
+        <h3 data-key="aadhaar">Aadhaar</h3>
+        <p data-key="aadhaarDesc">Update or download Aadhaar</p>
+      </div>
+      <div class="service-card" onclick="openService('electricity')">
+        <div class="service-icon">💡</div>
+        <h3 data-key="electricity">Electricity</h3>
+        <p data-key="electricityDesc">Pay electricity bills</p>
+      </div>
+      <div class="service-card" onclick="openService('water')">
+        <div class="service-icon">💧</div>
+        <h3 data-key="water">Water Bill</h3>
+        <p data-key="waterDesc">Pay water bills</p>
+      </div>
+      <div class="service-card" onclick="openService('mobile')">
+        <div class="service-icon">📱</div>
+        <h3 data-key="mobile">Mobile</h3>
+        <p data-key="mobileDesc">Recharge mobile</p>
+      </div>
+      <div class="service-card" onclick="openService('dth')">
+        <div class="service-icon">📺</div>
+        <h3 data-key="dth">DTH</h3>
+        <p data-key="dthDesc">Recharge DTH</p>
+      </div>
+      <div class="service-card" onclick="openService('gas')">
+        <div class="service-icon">🔥</div>
+        <h3 data-key="gas">Gas Booking</h3>
+        <p data-key="gasDesc">Book LPG cylinder</p>
+      </div>
+      <div class="service-card" onclick="openService('train')">
+        <div class="service-icon">🚆</div>
+        <h3 data-key="train">Train</h3>
+        <p data-key="trainDesc">Book train tickets</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+      <a href="payment.html" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 15px; text-decoration: none; text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 8px;">💳</div>
+        <div style="font-weight: 600;">Make Payment</div>
+      </a>
+      <a href="contact.html" style="background: var(--card-bg); color: var(--text); padding: 20px; border-radius: 15px; text-decoration: none; text-align: center; box-shadow: var(--shadow);">
+        <div style="font-size: 2rem; margin-bottom: 8px;">📞</div>
+        <div style="font-weight: 600;">Contact Support</div>
+      </a>
+      <a href="plans.html" style="background: var(--card-bg); color: var(--text); padding: 20px; border-radius: 15px; text-decoration: none; text-align: center; box-shadow: var(--shadow);">
+        <div style="font-size: 2rem; margin-bottom: 8px;">⭐</div>
+        <div style="font-weight: 600;">Upgrade Plan</div>
+      </a>
+    </div>
+
+    <!-- Recent Activity -->
+    <div style="background: var(--card-bg); border-radius: 15px; padding: 25px; box-shadow: var(--shadow); margin-bottom: 25px;">
+      <h3 style="color: var(--text); margin-bottom: 15px;">Recent Activity</h3>
+      <div id="activityList" style="display: flex; flex-direction: column; gap: 10px;">
+        <p style="color: var(--text-light); text-align: center;">No recent activity</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Modal -->
+  <div id="serviceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: var(--card-bg); border-radius: 20px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 id="modalTitle" style="color: var(--text);">Service</h2>
+        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text);">✕</button>
+      </div>
+      <div id="modalContent">
+        <div class="input-group">
+          <input id="serviceDetail" type="text" placeholder="Enter details" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
+        <button class="btn" onclick="submitService()" style="margin-top: 15px;">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chatbot -->
+  <div class="chatbot-widget">
+    <div class="chatbot-box" id="chatbotBox">
+      <div class="chatbot-header">
+        <span>🤖 Digital Seva Assistant</span>
+        <button onclick="toggleChatbot()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="message bot">Hello! I'm your Digital Seva assistant. How can I help you today?</div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatbotMessage()" style="flex: 1; padding: 10px 15px; border: 2px solid var(--border); border-radius: 25px; background: var(--card-bg); color: var(--text);">
+        <button onclick="sendChatbotMessage()" style="padding: 10px 20px; border: none; border-radius: 25px; background: var(--primary); color: white; cursor: pointer;">➤</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+  </div>
+
+  <!-- Voice FAB -->
+  <div class="fab-container">
+    <button class="fab-btn" onclick="voiceCommand()" title="Voice Command">🎤</button>
+  </div>
+
+  <footer class="footer">
+    <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        welcome: "Welcome to Digital Seva",
+        chooseService: "Choose a service to get started",
+        panCard: "PAN Card",
+        panDesc: "Apply, update or track PAN",
+        aadhaar: "Aadhaar",
+        aadhaarDesc: "Update or download Aadhaar",
+        electricity: "Electricity",
+        electricityDesc: "Pay electricity bills",
+        water: "Water Bill",
+        waterDesc: "Pay water bills",
+        mobile: "Mobile",
+        mobileDesc: "Recharge mobile",
+        dth: "DTH",
+        dthDesc: "Recharge DTH",
+        gas: "Gas Booking",
+        gasDesc: "Book LPG cylinder",
+        train: "Train",
+        trainDesc: "Book train tickets",
+        rights: "All rights reserved."
+      },
+      hi: {
+        welcome: "डिजिटल सेवा में आपका स्वागत है",
+        chooseService: "शुरू करने के लिए एक सेवा चुनें",
+        panCard: "पैन कार्ड",
+        panDesc: "पैन आवेदन, अपडेट या ट्रैक",
+        aadhaar: "आधार",
+        aadhaarDesc: "आधार अपडेट या डाउनलोड",
+        electricity: "बिजली",
+        electricityDesc: "बिजली के बिल भुगतान",
+        water: "पानी का बिल",
+        waterDesc: "पानी के बिल भुगतान",
+        mobile: "मोबाइल",
+        mobileDesc: "मोबाइल रिचार्ज",
+        dth: "डीटीएच",
+        dthDesc: "डीटीएच रिचार्ज",
+        gas: "गैस बुकिंग",
+        gasDesc: "एलपीजी सिलेंडर बुक",
+        train: "ट्रेन",
+        trainDesc: "ट्रेन टिकट बुक",
+        rights: "सर्वाधिकार सुरक्षित।"
+      },
+      ta: {
+        welcome: "டிஜிட்டல் சேவாவிற்கு வரவேற்கிறோம்",
+        chooseService: "தொடங்க ஒரு சேவையைத் தேர்வுசெய்க",
+        panCard: "பான் கார்டு",
+        panDesc: "பான் விண்ணப்பம், புதுப்பிப்பு",
+        aadhaar: "ஆதார்",
+        aadhaarDesc: "ஆதார் புதுப்பிப்பு",
+        electricity: "மின்சாரம்",
+        electricityDesc: "மின்சார கட்டணம்",
+        water: "தண்ணீர் கட்டணம்",
+        waterDesc: "தண்ணீர் பில் செலுத்து",
+        mobile: "மொபைல்",
+        mobileDesc: "மொபைல் ரீசார்ஜ்",
+        dth: "டிடிஎச்",
+        dthDesc: "டிடிஎச் ரீசார்ஜ்",
+        gas: "வாயு முன்பதிவு",
+        gasDesc: "எல்பிஜி சிலிண்டர் முன்பதிவு",
+        train: "ரயில்",
+        trainDesc: "ரயில் டிக்கெட் முன்பதிவு",
+        rights: "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
+      },
+      te: {
+        welcome: "డిజిటల్ సేవకు స్వాగతం",
+        chooseService: "ప్రారంభించడానికి సేవను ఎంచుకోండి",
+        panCard: "పాన్ కార్డ్",
+        panDesc: "పాన్ దరఖాస్తు, నవీకరణ",
+        aadhaar: "ఆధార్",
+        aadhaarDesc: "ఆధార్ నవీకరణ",
+        electricity: "విద్యుత్",
+        electricityDesc: "విద్యుత్ బిల్లు చెల్లించు",
+        water: "నీటి బిల్లు",
+        waterDesc: "నీటి బిల్లు చెల్లించు",
+        mobile: "మొబైల్",
+        mobileDesc: "మొబైల్ రీఛార్జ్",
+        dth: "డిటిహెచ్",
+        dthDesc: "డిటిహెచ్ రీఛార్జ్",
+        gas: "గ్యాస్ బుకింగ్",
+        gasDesc: "ఎల్పీజీ సిలిండర్ బుక్",
+        train: "రైలు",
+        trainDesc: "రైలు టిక్కెట్ బుకింగ్",
+        rights: "అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి."
+      },
+      bn: {
+        welcome: "ডিজিটাল সেবায় স্বাগতম",
+        chooseService: "শুরু করতে একটি সেবা বেছে নিন",
+        panCard: "প্যান কার্ড",
+        panDesc: "প্যান আবেদন, আপডেট",
+        aadhaar: "আধার",
+        aadhaarDesc: "আধার আপডেট",
+        electricity: "বিদ্যুৎ",
+        electricityDesc: "বিদ্যুৎ বিল পরিশোধ",
+        water: "জল বিল",
+        waterDesc: "জল বিল পরিশোধ",
+        mobile: "মোবাইল",
+        mobileDesc: "মোবাইল রিচার্জ",
+        dth: "ডিটিএইচ",
+        dthDesc: "ডিটিএইচ রিচার্জ",
+        gas: "গ্যাস বুকিং",
+        gasDesc: "এলপিজি সিলিন্ডার বুক",
+        train: "ট্রেন",
+        trainDesc: "ট্রেন টিকিট বুকিং",
+        rights: "সমস্ত অধিকার সংরক্ষিত।"
+      },
+      mr: {
+        welcome: "डिजिटल सेवा मध्ये स्वागत",
+        chooseService: "सुरू करण्यासाठी सेवा निवडा",
+        panCard: "पॅन कार्ड",
+        panDesc: "पॅन अर्ज, अद्यतन",
+        aadhaar: "आधार",
+        aadhaarDesc: "आधार अद्यतन",
+        electricity: "वीज",
+        electricityDesc: "वीज बिल भरा",
+        water: "पाणी बिल",
+        waterDesc: "पाणी बिल भरा",
+        mobile: "मोबाइल",
+        mobileDesc: "मोबाइल रिचार्ज",
+        dth: "डीटीएच",
+        dthDesc: "डीटीएच रिचार्ज",
+        gas: "गॅस बुकिंग",
+        gasDesc: "एलपीजी सिलेंडर बुक",
+        train: "ट्रेन",
+        trainDesc: "ट्रेन तिकीट बुक",
+        rights: "सर्व हक्क राखीव."
+      },
+      gu: {
+        welcome: "ડિજિટલ સેવામાં સ્વાગત છે",
+        chooseService: "શરૂ કરવા માટે સેવા પસંદ કરો",
+        panCard: "પાન કાર્ડ",
+        panDesc: "પાન અરજી, અપડેટ",
+        aadhaar: "આધાર",
+        aadhaarDesc: "આધાર અપડેટ",
+        electricity: "વીજળી",
+        electricityDesc: "વીજળી બિલ ભરો",
+        water: "પાણીનું બિલ",
+        waterDesc: "પાણીનું બિલ ભરો",
+        mobile: "મોબાઇલ",
+        mobileDesc: "મોબાઇલ રિચાર્જ",
+        dth: "ડીટીએચ",
+        dthDesc: "ડીટીએચ રિચાર્જ",
+        gas: "ગેસ બુકિંગ",
+        gasDesc: "એલપીજી સિલિન્ડર બુક",
+        train: "ટ્રેન",
+        trainDesc: "ટ્રેન ટિકિટ બુકિંગ",
+        rights: "બધા હક્કો રાખવામાં આવેલા છે."
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+    const token = localStorage.getItem("token");
+    let currentService = null;
+
+    if (!token) location.href = "login.html";
+
+    const userName = localStorage.getItem("userName");
+    if (userName) document.getElementById("userName").textContent = userName;
+
+    document.getElementById("langSelect").value = currentLang;
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        if (t[el.dataset.key]) el.textContent = t[el.dataset.key];
+      });
+    }
+
+    function changeLang(lang) {
+      currentLang = lang;
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+      location.href = "index.html";
+    }
+
+    function showNotifications() {
+      document.getElementById("notifPanel").style.display = "block";
+      loadNotifications();
+    }
+
+    function hideNotifications() {
+      document.getElementById("notifPanel").style.display = "none";
+    }
+
+    async function loadNotifications() {
+      try {
+        const res = await fetch("http://localhost:5000/notifications", {
+          headers: { "Authorization": token }
+        });
+        const data = await res.json();
+        const list = document.getElementById("notifList");
+        list.innerHTML = "";
+
+        if (data.notifications.length === 0) {
+          list.innerHTML = `<p style="color: var(--text-light); text-align: center;">No notifications</p>`;
+          document.getElementById("notifBadge").style.display = "none";
+          return;
+        }
+
+        const unreadCount = data.notifications.filter(n => !n.read).length;
+        document.getElementById("notifBadge").textContent = unreadCount;
+        document.getElementById("notifBadge").style.display = unreadCount > 0 ? "inline-flex" : "none";
+
+        data.notifications.forEach(n => {
+          const div = document.createElement("div");
+          div.style.cssText = `background: ${n.read ? 'var(--bg)' : 'rgba(102,126,234,0.1)'}; padding: 12px; border-radius: 10px; border-left: 4px solid ${n.type === 'success' ? 'var(--success)' : n.type === 'warning' ? 'var(--warning)' : 'var(--primary)'};`;
+          div.innerHTML = `<strong style="color: var(--text);">${n.title}</strong><p style="color: var(--text-light); font-size: 0.85rem;">${n.message}</p>`;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function openService(type) {
+      currentService = type;
+      const titles = {
+        pan: "PAN Card Service",
+        aadhaar: "Aadhaar Service",
+        electricity: "Electricity Bill",
+        water: "Water Bill",
+        mobile: "Mobile Recharge",
+        dth: "DTH Recharge",
+        gas: "Gas Booking",
+        train: "Train Booking"
+      };
+      document.getElementById("modalTitle").textContent = titles[type];
+      document.getElementById("serviceModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("serviceModal").style.display = "none";
+      currentService = null;
+    }
+
+    async function submitService() {
+      const detail = document.getElementById("serviceDetail").value;
+      if (!detail) {
+        alert("Please enter details");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/service", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ type: currentService, details: { info: detail }, amount: 100 })
+        });
+        const data = await res.json();
+        alert(data.message);
+        closeModal();
+        loadActivity();
+      } catch (err) {
+        alert("Error! Please try again.");
+      }
+    }
+
+    async function loadActivity() {
+      try {
+        const res = await fetch("http://localhost:5000/dashboard", {
+          headers: { "Authorization": token }
+        });
+        const data = await res.json();
+
+        const list = document.getElementById("activityList");
+        list.innerHTML = "";
+
+        const activities = [...(data.services || []), ...(data.payments || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+
+        if (activities.length === 0) {
+          list.innerHTML = `<p style="color: var(--text-light); text-align: center;">No recent activity</p>`;
+          return;
+        }
+
+        activities.forEach(a => {
+          const div = document.createElement("div");
+          div.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px;";
+          const isPayment = a.transactionId !== undefined;
+          div.innerHTML = `
+            <div>
+              <strong style="color: var(--text);">${isPayment ? '💳 Payment' : '⚡ Service'}</strong>
+              <div style="color: var(--text-light); font-size: 0.85rem;">${a.service || a.type} - ${new Date(a.createdAt).toLocaleDateString()}</div>
+            </div>
+            <div style="color: ${isPayment ? 'var(--success)' : 'var(--primary)'}; font-weight: 600;">
+              ${isPayment ? '₹' + a.amount : a.status}
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function toggleChatbot() {
+      document.getElementById("chatbotBox").classList.toggle("active");
+    }
+
+    async function sendChatbotMessage() {
+      const input = document.getElementById("chatbotInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const messagesDiv = document.getElementById("chatbotMessages");
+      messagesDiv.innerHTML += `<div class="message user">${msg}</div>`;
+      input.value = "";
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      try {
+        const res = await fetch("http://localhost:5000/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        messagesDiv.innerHTML += `<div class="message bot">${data.reply}</div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (err) {
+        messagesDiv.innerHTML += `<div class="message bot">Sorry, I'm having trouble connecting.</div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }
+
+    function voiceCommand() {
+      if (!("webkitSpeechRecognition" in window)) {
+        alert("Voice not supported");
+        return;
+      }
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = currentLang === "hi" ? "hi-IN" : "en-IN";
+      recognition.onresult = function(event) {
+        const text = event.results[0][0].transcript.toLowerCase();
+        alert("Heard: " + text);
+
+        if (text.includes("pan")) openService("pan");
+        else if (text.includes("aadhaar") || text.includes("adhar")) openService("aadhaar");
+        else if (text.includes("electricity") || text.includes("bijli")) openService("electricity");
+        else if (text.includes("water") || text.includes("pani")) openService("water");
+        else if (text.includes("mobile") || text.includes("phone")) openService("mobile");
+        else if (text.includes("dth")) openService("dth");
+        else if (text.includes("gas") || text.includes("cylinder")) openService("gas");
+        else if (text.includes("train") || text.includes("rail")) openService("train");
+        else if (text.includes("payment") || text.includes("pay")) location.href = "payment.html";
+        else if (text.includes("logout")) logout();
+      };
+      recognition.start();
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+    loadActivity();
+    loadNotifications();
+  </script>
+</body>
+</html>
+

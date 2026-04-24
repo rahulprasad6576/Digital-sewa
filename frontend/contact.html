@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .contact-hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+    .contact-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .info-card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    .info-card .icon { font-size: 2rem; margin-bottom: 10px; }
+    .contact-form {
+      background: var(--card-bg);
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    @media (max-width: 768px) {
+      .contact-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🚀 Digital Seva</div>
+    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+      <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
+      <a href="about.html" style="color: var(--text); text-decoration: none;">About</a>
+      <a href="plans.html" style="color: var(--text); text-decoration: none;">Plans</a>
+      <a href="contact.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Contact</a>
+      <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
+      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+    </div>
+  </nav>
+
+  <section class="contact-hero">
+    <h1 data-key="contactTitle">Contact Us</h1>
+    <p data-key="contactSubtitle">We'd love to hear from you</p>
+  </section>
+
+  <div class="contact-container">
+    <div class="contact-info">
+      <div class="info-card">
+        <div class="icon">📧</div>
+        <h3 data-key="email">Email</h3>
+        <p style="color: var(--text-light);">support@digitalseva.com</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">📞</div>
+        <h3 data-key="phone">Phone</h3>
+        <p style="color: var(--text-light);">+91 1800-123-4567</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">📍</div>
+        <h3 data-key="address">Address</h3>
+        <p style="color: var(--text-light);">123 Tech Park, Bangalore, Karnataka, India</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">⏰</div>
+        <h3 data-key="hours">Working Hours</h3>
+        <p style="color: var(--text-light);">Mon - Sat: 9AM - 6PM</p>
+      </div>
+
+    <div class="contact-form">
+      <h2 style="color: var(--text); margin-bottom: 20px;" data-key="sendMessage">Send Message</h2>
+      <div class="input-group">
+        <input id="name" type="text" placeholder="Your Name" data-key-placeholder="namePlaceholder">
+      </div>
+      <div class="input-group">
+        <input id="email" type="email" placeholder="Your Email" data-key-placeholder="emailPlaceholder">
+      </div>
+      <div class="input-group">
+        <input id="phone" type="tel" placeholder="Phone Number (Optional)" data-key-placeholder="phonePlaceholder">
+      </div>
+      <div class="input-group">
+        <input id="subject" type="text" placeholder="Subject" data-key-placeholder="subjectPlaceholder">
+      </div>
+      <div class="input-group">
+        <textarea id="message" rows="4" placeholder="Your Message" data-key-placeholder="messagePlaceholder" style="resize: vertical;"></textarea>
+      </div>
+      <button class="btn" onclick="sendContact()" data-key="sendBtn">Send Message</button>
+      <p id="contactResult" style="margin-top: 15px; text-align: center;"></p>
+    </div>
+
+  <footer style="background: var(--card-bg); padding: 30px; text-align: center; color: var(--text-light);">
+    <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        contactTitle: "Contact Us",
+        contactSubtitle: "We'd love to hear from you",
+        email: "Email",
+        phone: "Phone",
+        address: "Address",
+        hours: "Working Hours",
+        sendMessage: "Send Message",
+        namePlaceholder: "Your Name",
+        emailPlaceholder: "Your Email",
+        phonePlaceholder: "Phone Number (Optional)",
+        subjectPlaceholder: "Subject",
+        messagePlaceholder: "Your Message",
+        sendBtn: "Send Message",
+        rights: "All rights reserved."
+      },
+      hi: {
+        contactTitle: "हमसे संपर्क करें",
+        contactSubtitle: "हम आपसे सुनना पसंद करेंगे",
+        email: "ईमेल",
+        phone: "फोन",
+        address: "पता",
+        hours: "कार्य समय",
+        sendMessage: "संदेश भेजें",
+        namePlaceholder: "आपका नाम",
+        emailPlaceholder: "आपका ईमेल",
+        phonePlaceholder: "फोन नंबर (वैकल्पिक)",
+        subjectPlaceholder: "विषय",
+        messagePlaceholder: "आपका संदेश",
+        sendBtn: "संदेश भेजें",
+        rights: "सर्वाधिकार सुरक्षित।"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    function applyLang() {
+      const t = translations[currentLang];
+      document.querySelectorAll("[data-key]").forEach(el => {
+        el.textContent = t[el.dataset.key];
+      });
+      document.querySelectorAll("[data-key-placeholder]").forEach(el => {
+        el.placeholder = t[el.dataset.keyPlaceholder];
+      });
+      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === "en" ? "hi" : "en";
+      localStorage.setItem("lang", currentLang);
+      applyLang();
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.documentElement.classList.contains("dark-mode"));
+    }
+
+    async function sendContact() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const subject = document.getElementById("subject").value;
+      const message = document.getElementById("message").value;
+
+      if (!name || !email || !subject || !message) {
+        document.getElementById("contactResult").textContent = currentLang === "hi" ? "कृपया सभी आवश्यक फ़ील्ड भरें" : "Please fill all required fields";
+        document.getElementById("contactResult").style.color = "var(--error)";
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phone, subject, message })
+        });
+        const data = await res.json();
+        document.getElementById("contactResult").textContent = data.message;
+        document.getElementById("contactResult").style.color = "var(--success)";
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("subject").value = "";
+        document.getElementById("message").value = "";
+      } catch (err) {
+        document.getElementById("contactResult").textContent = currentLang === "hi" ? "त्रुटि! कृपया पुनः प्रयास करें।" : "Error! Please try again.";
+        document.getElementById("contactResult").style.color = "var(--error)";
+      }
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    applyLang();
+  </script>
+</body>
+</html>
