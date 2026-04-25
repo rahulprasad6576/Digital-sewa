@@ -4,6 +4,7 @@
   "description": "Digital Seva Platform - One stop digital services for Indian citizens",
   "main": "backend/server.js",
   "scripts": {
+    "build": "cd backend && npm install",
     "start": "cd backend && node server.js",
     "dev": "cd backend && node server.js",
     "seed": "cd backend && node seed.js",
