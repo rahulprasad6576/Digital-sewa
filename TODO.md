@@ -1,30 +1,26 @@
-# Digital Seva Platform - Full Feature Implementation
+# Digital Seva - Real Payments & Recharges Implementation
 
-## Backend Updates
-- [x] Create Payment model
-- [x] Create Contact model  
-- [x] Create Notification model
-- [x] Create Service model
-- [x] Update server.js with all new routes (contact, payments, notifications, plans, chatbot, admin)
+## Phase 1: Fix & Harden Razorpay Payments ✅
+- [x] Create `.env.example` with all required API keys
+- [x] Update `backend/utils/paymentGateway.js` - add webhook verification, fetch, refund
+- [x] Update `backend/server.js` - remove fake `/payment` route, add webhook endpoint, add status endpoint
+- [x] Update `frontend/payment.html` - remove demo fallback, always use Razorpay when configured
 
-## Frontend Pages
-- [x] index.html - Homepage (intro + CTA)
-- [x] login.html - Login page
-- [x] signup.html - Signup page
-- [x] dashboard.html - User Dashboard with services
-- [x] about.html - About / Vision page
-- [x] contact.html - Contact page
-- [x] plans.html - Plans / Revenue section
-- [x] payment.html - Payment section (UPI/demo)
-- [x] privacy.html - Security & Privacy section
-- [x] admin.html - Admin panel
-- [x] chatbot widget - Floating AI chatbot (added to all pages)
-- [x] notifications - System (added to dashboard)
+## Phase 2: Real Recharge API Integration ✅
+- [x] Rewrite `backend/utils/rechargeService.js` - real HTTP API integration, operator detection, status checking
+- [x] Update `backend/server.js` - improve recharge endpoints, add status endpoint
+- [x] Update `frontend/payment.html` - add recharge status display, operator auto-detection
 
-## Features
-- [x] Multi-language (English + Hindi)
-- [x] Dark mode toggle
-- [x] Voice support (speech-to-text)
-- [x] Mobile-friendly responsive UI
-- [x] JWT Authentication
-- [x] Admin panel with stats
+## Phase 3: Real Bill Payment Integration ✅
+- [x] Create `backend/utils/billPaymentService.js` - BBPS-compatible bill fetch and pay
+- [x] Update `backend/server.js` - add `/bill/fetch` and `/bill/pay` endpoints
+- [x] Update `frontend/dashboard.html` - update service modal for real bill payments
+
+## Phase 4: Documentation ✅
+- [x] Update `README.md` with real provider setup instructions
+- [x] Verify all dependencies in `backend/package.json`
+
+## Testing
+- [ ] Test Razorpay payment flow with test keys
+- [ ] Test recharge flow with provider sandbox
+- [ ] Test bill payment flow

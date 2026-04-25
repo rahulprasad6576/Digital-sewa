@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Digital Seva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+  <a href="index.html" style="position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-size: 1.2rem; font-weight: 600;">← Home</a>
+
+  <div class="auth-container">
+    <div class="logo">
+      <h1>🚀 Digital Seva</h1>
+      <p>Admin Panel</p>
+    </div>
+    <h2>Admin Login</h2>
+    <div class="input-group">
+      <input id="email" type="email" placeholder="Admin Email">
+    </div>
+    <div class="input-group">
+      <input id="password" type="password" placeholder="Password">
+    </div>
+    <button class="btn" onclick="adminLogin()">Login</button>
+    <div class="link">
+      <a href="login.html" style="color: var(--primary);">User Login</a>
+    </div>
+  </div>
+
+  <script>
+    async function adminLogin() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      try {
+        const res = await fetch("/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("adminToken", data.token);
+          alert(data.message);
+          location.href = "admin.html";
+        } else {
+          alert(data.message || "Login failed");
+        }
+      } catch (err) {
+        alert("Network error: Cannot connect to server.");
+      }
+    }
+  </script>
+</body>
+</html>
+

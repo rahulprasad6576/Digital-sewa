@@ -68,15 +68,19 @@
       <div class="stat-card">
         <div class="stat-number" id="totalUsers">0</div>
         <div class="stat-label">Total Users</div>
+      </div>
       <div class="stat-card">
         <div class="stat-number" id="totalPayments">0</div>
         <div class="stat-label">Total Payments</div>
+      </div>
       <div class="stat-card">
         <div class="stat-number" id="totalContacts">0</div>
         <div class="stat-label">Contacts</div>
+      </div>
       <div class="stat-card">
         <div class="stat-number" id="totalServices">0</div>
         <div class="stat-label">Services</div>
+      </div>
     </div>
 
     <h2 style="color: var(--text); margin-bottom: 15px;">Recent Users</h2>
@@ -107,19 +111,13 @@
         <tbody id="contactsTable"></tbody>
       </table>
     </div>
+  </div>
 
   <script>
     const adminToken = localStorage.getItem("adminToken");
 
     if (!adminToken) {
-      // For demo, show a prompt
-      const pass = prompt("Enter admin password (demo: admin123):");
-      if (pass === "admin123") {
-        localStorage.setItem("adminToken", "demo-admin-token");
-      } else {
-        alert("Access denied");
-        location.href = "index.html";
-      }
+      location.href = "admin-login.html";
     }
 
     function toggleDarkMode() {
@@ -135,10 +133,9 @@
     async function loadStats() {
       try {
         const res = await fetch("/admin/stats", {
-          headers: { "Authorization": adminToken || "demo-admin-token" }
+          headers: { "Authorization": adminToken }
         });
         if (!res.ok) {
-          // Fallback to mock data if API not available
           showMockData();
           return;
         }

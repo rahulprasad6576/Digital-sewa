@@ -70,13 +70,25 @@
 <body>
   <nav class="navbar">
     <div class="nav-brand">🚀 Digital Seva</div>
-    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+    <div class="nav-links" style="display: flex; gap: 15px; align-items: center;">
       <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
       <a href="about.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">About</a>
       <a href="plans.html" style="color: var(--text); text-decoration: none;">Plans</a>
       <a href="contact.html" style="color: var(--text); text-decoration: none;">Contact</a>
       <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
-      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+      <select id="langSelect" onchange="changeLang(this.value)" style="background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem;">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="bn">বাংলা</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="ml">മലയാളം</option>
+        <option value="pa">ਪੰਜਾਬੀ</option>
+        <option value="ur">اردو</option>
+      </select>
       <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
     </div>
   </nav>
@@ -123,29 +135,26 @@
         <h3 data-key="accessibility">Accessibility</h3>
         <p data-key="accessibilityDesc">Services for everyone</p>
       </div>
+    </div>
 
     <h2 style="text-align: center; color: var(--text); margin: 40px 0 20px;" data-key="meetTeam">Meet Our Team</h2>
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-avatar">👤</div>
-        <h4>Rahul Kumar</h4>
+        <div class="team-avatar">RP</div>
+        <h4>Rahul Prasad</h4>
         <p style="color: var(--text-light);">Founder & CEO</p>
       </div>
       <div class="team-card">
-        <div class="team-avatar">👤</div>
-        <h4>Priya Sharma</h4>
+        <div class="team-avatar">VK</div>
+        <h4>Vinay Kumar</h4>
         <p style="color: var(--text-light);">CTO</p>
       </div>
       <div class="team-card">
-        <div class="team-avatar">👤</div>
-        <h4>Amit Patel</h4>
+        <div class="team-avatar">AG</div>
+        <h4>Aman Gupta</h4>
         <p style="color: var(--text-light);">Head of Operations</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar">👤</div>
-        <h4>Sneha Gupta</h4>
-        <p style="color: var(--text-light);">Customer Success</p>
-      </div>
+    </div>
   </div>
 
   <footer style="background: var(--card-bg); padding: 30px; text-align: center; color: var(--text-light);">
@@ -191,6 +200,139 @@
         accessibilityDesc: "सबके लिए सेवाएं",
         meetTeam: "हमारी टीम से मिलें",
         rights: "सर्वाधिकार सुरक्षित।"
+      },
+      ta: {
+        aboutTitle: "டிஜிட்டல் சேவா பற்றி",
+        aboutSubtitle: "ஒவ்வொரு இந்தியருக்கும் டிஜிட்டல் சேவைகளை வழங்குதல்",
+        ourVision: "எங்கள் பார்வை",
+        visionText: "ஒரு எளிய, பயன்படுத்த எளிதான தளம் மூலம் ஒவ்வொரு இந்திய குடிமகனுக்கும் டிஜிட்டல் சேவைகளை அணுகக்கூடியதாக்குதல். தொழில்நுட்பம் வாழ்க்கையை எளிதாக்க வேண்டும், சிக்கலாக்கக் கூடாது.",
+        ourMission: "எங்கள் நோக்கம்",
+        missionText: "தொழில்நுட்பம், வெளிப்படைத்தன்மை மற்றும் நம்பிக்கையுடன் அரசு மற்றும் பயன்பாட்டு சேவைகளை எளிதாக்குதல். டிஜிட்டல் இடைவெளியைக் குறைக்க மற்றும் அடிப்படை சேவைகளை அனைவரின் பாதையிலும் கொண்டுவர எங்கள் இலக்கு.",
+        ourValues: "எங்கள் மதிப்புகள்",
+        trust: "நம்பிக்கை",
+        trustDesc: "உங்கள் தரவு எங்களுடன் பாதுகாப்பானது",
+        speed: "வேகம்",
+        speedDesc: "வேகமான சேவை செயலாக்கம்",
+        support: "ஆதரவு",
+        supportDesc: "24/7 வாடிக்கையாளர் உதவி",
+        accessibility: "அணுகல்",
+        accessibilityDesc: "அனைவருக்கும் சேவைகள்",
+        meetTeam: "எங்கள் குழுவை சந்திக்கவும்",
+        rights: "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
+      },
+      bn: {
+        aboutTitle: "ডিজিটাল সেবা সম্পর্কে",
+        aboutSubtitle: "প্রতিটি ভারতীয়কে ডিজিটাল সেবা প্রদান",
+        ourVision: "আমাদের দৃষ্টিভঙ্গি",
+        visionText: "একটি সহজ, ব্যবহার সহজ প্ল্যাটফর্মের মাধ্যমে প্রতিটি ভারতীয় নাগরিকের কাছে ডিজিটাল সেবা পৌঁছে দেওয়া। আমরা বিশ্বাস করি প্রযুক্তি জীবন সহজ করবে, জটিল নয়।",
+        ourMission: "আমাদের মিশন",
+        missionText: "প্রযুক্তি, স্বচ্ছতা এবং বিশ্বাসের সাথে সরকারি ও ইউটিলিটি সেবা সহজ করা। ডিজিটাল ব্যবধান কমিয়ে এবং প্রয়োজনীয় সেবা সবার হাতের মুঠোয় আনা আমাদের লক্ষ্য।",
+        ourValues: "আমাদের মূল্যবোধ",
+        trust: "বিশ্বাস",
+        trustDesc: "আপনার তথ্য আমাদের কাছে নিরাপদ",
+        speed: "গতি",
+        speedDesc: "দ্রুত সেবা প্রক্রিয়াকরণ",
+        support: "সহায়তা",
+        supportDesc: "২৪/৭ গ্রাহক সহায়তা",
+        accessibility: "প্রবেশযোগ্যতা",
+        accessibilityDesc: "সবার জন্য সেবা",
+        meetTeam: "আমাদের দলের সাথে পরিচিত হন",
+        rights: "সর্বস্বত্ব সংরক্ষিত।"
+      },
+      gu: {
+        aboutTitle: "ડિજિટલ સેવા વિશે",
+        aboutSubtitle: "દરેક ભારતીયને ડિજિટલ સેવાઓ આપવી",
+        ourVision: "અમારી દૃષ્ટિ",
+        visionText: "એક સરળ, વપરાશમાં સરળ પ્લેટફોર્મ દ્વારા દરેક ભારતીય નાગરિક સુધી ડિજિટલ સેવાઓ પહોંચાડવી. અમને લાગે છે કે ટેકનોલોજી જીવન સરળ બનાવવી જોઈએ, જટિલ નહીં.",
+        ourMission: "અમારું મિશન",
+        missionText: "ટેકનોલોજી, પારદર્શિતા અને વિશ્વાસ સાથે સરકારી અને ઉપયોગિતા સેવાઓને સરળ બનાવવી. ડિજિટલ અંતર ઘટાડવું અને આવશ્યક સેવાઓ દરેકની પહોંચમાં લાવવી અમારું લક્ષ્ય છે.",
+        ourValues: "અમારા મૂલ્યો",
+        trust: "વિશ્વાસ",
+        trustDesc: "તમારો ડેટા અમારી સાથે સુરક્ષિત છે",
+        speed: "ઝડપ",
+        speedDesc: "ઝડપી સેવા પ્રક્રિયા",
+        support: "સહાય",
+        supportDesc: "24/7 ગ્રાહક સહાય",
+        accessibility: "સુલભતા",
+        accessibilityDesc: "દરેક માટે સેવાઓ",
+        meetTeam: "અમારી ટીમને મળો",
+        rights: "બધા હક્કો રાખવામાં આવેલા છે."
+      },
+      kn: {
+        aboutTitle: "ಡಿಜಿಟಲ್ ಸೇವಾ ಬಗ್ಗೆ",
+        aboutSubtitle: "ಪ್ರತಿ ಭಾರತೀಯರಿಗೆ ಡಿಜಿಟಲ್ ಸೇವೆಗಳನ್ನು ಒದಗಿಸುವುದು",
+        ourVision: "ನಮ್ಮ ದೃಷ್ಟಿಕೋನ",
+        visionText: "ಸರಳ, ಬಳಕೆಯಲ್ಲಿ ಸುಲಭವಾದ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಮೂಲಕ ಪ್ರತಿ ಭಾರತೀಯ ನಾಗರಿಕರಿಗೆ ಡಿಜಿಟಲ್ ಸೇವೆಗಳನ್ನು ಲಭ್ಯವಾಗಿಸುವುದು. ತಂತ್ರಜ್ಞಾನ ಜೀವನವನ್ನು ಸರಳಗೊಳಿಸಬೇಕು, ಸಂಕೀರ್ಣಗೊಳಿಸಬಾರದು ಎಂದು ನಾವು ಭಾವಿಸುತ್ತೇವೆ.",
+        ourMission: "ನಮ್ಮ ಉದ್ದೇಶ",
+        missionText: "ತಂತ್ರಜ್ಞಾನ, ಪಾರದರ್ಶಕತೆ ಮತ್ತು ವಿಶ್ವಾಸದೊಂದಿಗೆ ಸರ್ಕಾರಿ ಮತ್ತು ಉಪಯುಕ್ತ ಸೇವೆಗಳನ್ನು ಸರಳಗೊಳಿಸುವುದು. ಡಿಜಿಟಲ್ ಅಂತರವನ್ನು ಕಡಿಮೆ ಮಾಡುವುದು ಮತ್ತು ಅಗತ್ಯ ಸೇವೆಗಳನ್ನು ಎಲ್ಲರಿಗೂ ಲಭ್ಯವಾಗಿಸುವುದು ನಮ್ಮ ಉದ್ದೇಶ.",
+        ourValues: "ನಮ್ಮ ಮೌಲ್ಯಗಳು",
+        trust: "ವಿಶ್ವಾಸ",
+        trustDesc: "ನಿಮ್ಮ ಡೇಟಾ ನಮ್ಮೊಂದಿಗೆ ಸುರಕ್ಷಿತವಾಗಿದೆ",
+        speed: "ವೇಗ",
+        speedDesc: "ವೇಗವಾದ ಸೇವೆ ಪ್ರಕ್ರಿಯೆ",
+        support: "ಬೆಂಬಲ",
+        supportDesc: "24/7 ಗ್ರಾಹಕ ಬೆಂಬಲ",
+        accessibility: "ಪ್ರವೇಶಿಸುವಿಕೆ",
+        accessibilityDesc: "ಎಲ್ಲರಿಗೂ ಸೇವೆಗಳು",
+        meetTeam: "ನಮ್ಮ ತಂಡದನ್ನು ಭೇಟಿ ಮಾಡಿ",
+        rights: "ಎಲ್ಲಾ ಹಕ್ಕುಗಳూ ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ."
+      },
+      ml: {
+        aboutTitle: "ഡിജിറ്റൽ സേവയെക്കുറിച്ച്",
+        aboutSubtitle: "ഓരോ ഇന്ത്യൻ പൗരനും ഡിജിറ്റൽ സേവനങ്ങൾ നൽകുന്നു",
+        ourVision: "ഞങ്ങളുടെ ദർശനം",
+        visionText: "ലളിതവും, ഉപയോഗിക്കാൻ എളുപ്പവുമായ പ്ലാറ്റ്ഫോമിലൂടെ എല്ലാ ഇന്ത്യൻ പൗരന്മാർക്കും ഡിജിറ്റൽ സേവനങ്ങൾ ലഭ്യമാക്കുന്നു. സാങ്കേതികവിദ്യ ജീവിതം ലളിതമാക്കണമെന്ന് ഞങ്ങൾ വിശ്വസിക്കുന്നു, സങ്കീർണ്ണമാക്കരുത്.",
+        ourMission: "ഞങ്ങളുടെ ദൗത്യം",
+        missionText: "സാങ്കേതികവിദ്യ, പോഷകസാന്നിധ്യം, വിശ്വാസം എന്നിവയോടുകൂടി ഗവൺമെന്റ് സേവനങ്ങളും യൂട്ടിലിറ്റി സേവനങ്ങളും ലളിതമാക്കുക. ഡിജിറ്റൽ വിടവ് കുറച്ച് അടിസ്ഥാന സേവനങ്ങൾ എല്ലാവരുടെയും പക്കലെത്തിക്കുകയാണ് ഞങ്ങളുടെ ലക്ഷ്യം.",
+        ourValues: "ഞങ്ങളുടെ മൂല്യങ്ങൾ",
+        trust: "വിശ്വാസം",
+        trustDesc: "നിങ്ങളുടെ ഡാറ്റ ഞങ്ങളോടൊപ്പം സുരക്ഷിതമാണ്",
+        speed: "വേഗത",
+        speedDesc: "വേഗത്തിലുള്ള സേവന പ്രോസസ്സിംഗ്",
+        support: "പിന്തുണ",
+        supportDesc: "24/7 കസ്റ്റമർ സേവനം",
+        accessibility: "ലഭ്യത",
+        accessibilityDesc: "എല്ലാവർക്കുമുള്ള സേവനങ്ങൾ",
+        meetTeam: "ഞങ്ങളുടെ ടീമിനെ കാണുക",
+        rights: "എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം."
+      },
+      pa: {
+        aboutTitle: "ਡਿਜੀਟਲ ਸੇਵਾ ਬਾਰੇ",
+        aboutSubtitle: "ਹਰ ਭਾਰਤੀ ਨੂੰ ਡਿਜੀਟਲ ਸੇਵਾਵਾਂ ਪ੍ਰਦਾਨ ਕਰਨਾ",
+        ourVision: "ਸਾਡੀ ਦ੍ਰਿਸ਼ਟੀ",
+        visionText: "ਇੱਕ ਸਰਲ, ਵਰਤੋਂ ਵਿੱਚ ਅਸਾਨ ਪਲੇਟਫਾਰਮ ਰਾਹੀਂ ਹਰ ਭਾਰਤੀ ਨਾਗਰਿਕ ਤੱਕ ਡਿਜੀਟਲ ਸੇਵਾਵਾਂ ਪਹੁੰਚਾਉਣਾ। ਅਸੀਂ ਮੰਨਦੇ ਹਾਂ ਕਿ ਤਕਨਾਲੋਜੀ ਜੀਵਨ ਨੂੰ ਸਰਲ ਬਣਾਉਣੀ ਚਾਹੀਦੀ ਹੈ, ਜਟਿਲ ਨਹੀਂ।",
+        ourMission: "ਸਾਡਾ ਮਿਸ਼ਨ",
+        missionText: "ਤਕਨਾਲੋਜੀ, ਪਾਰਦਰਸ਼ਤਾ ਅਤੇ ਵਿਸ਼ਵਾਸ ਨਾਲ ਸਰਕਾਰੀ ਅਤੇ ਯੂਟਿਲਿਟੀ ਸੇਵਾਵਾਂ ਨੂੰ ਸਰਲ ਬਣਾਉਣਾ। ਡਿਜੀਟਲ ਖਾਈ ਨੂੰ ਘਟਾਉਣਾ ਅਤੇ ਜ਼ਰੂਰੀ ਸੇਵਾਵਾਂ ਨੂੰ ਹਰ ਕਿਸੇ ਦੀ ਪਹੁੰਚ ਵਿੱਚ ਲਿਆਉਣਾ ਸਾਡਾ ਲਕਸ਼ ਹੈ।",
+        ourValues: "ਸਾਡੇ ਮੁੱਲ",
+        trust: "ਭਰੋਸਾ",
+        trustDesc: "ਤੁਹਾਡਾ ਡਾਟਾ ਸਾਡੇ ਨਾਲ ਸੁਰੱਖਿਅਤ ਹੈ",
+        speed: "ਗਤੀ",
+        speedDesc: "ਤੇਜ਼ ਸੇਵਾ ਪ੍ਰੋਸੈਸਿੰਗ",
+        support: "ਸਹਾਇਤਾ",
+        supportDesc: "24/7 ਗਾਹਕ ਸਹਾਇਤਾ",
+        accessibility: "ਪਹੁੰਚ",
+        accessibilityDesc: "ਹਰ ਕਿਸੇ ਲਈ ਸੇਵਾਵਾਂ",
+        meetTeam: "ਸਾਡੀ ਟੀਮ ਨੂੰ ਮਿਲੋ",
+        rights: "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।"
+      },
+      ur: {
+        aboutTitle: "ڈیجیٹل سیوا کے بارے میں",
+        aboutSubtitle: "ہر ہندوستانی کو ڈیجیٹل خدمات فراہم کرنا",
+        ourVision: "ہمارا وژن",
+        visionText: "ایک آسان، استعمال میں آسان پلیٹ فارم کے ذریعے ہر ہندوستانی شہری تک ڈیجیٹل خدمات تک رسائی۔ ہمارا یقین ہے کہ ٹیکنالوجی زندگی کو آسان بنائے، پیچیدہ نہیں۔",
+        ourMission: "ہمارا مشن",
+        missionText: "ٹیکنالوجی، شفافیت اور اعتماد کے ساتھ سرکاری اور یوٹیلیٹی خدمات کو آسان بنانا۔ ڈیجیٹل خلی کو کم کرنا اور ضروری خدمات کو ہر کسی کی پہنچ میں لانا ہمارا مقصد ہے۔",
+        ourValues: "ہماری اقدار",
+        trust: "اعتماد",
+        trustDesc: "آپ کا ڈیٹا ہمارے ساتھ محفوظ ہے",
+        speed: "رفتار",
+        speedDesc: "تیز سروس پراسیسنگ",
+        support: "مدد",
+        supportDesc: "24/7 کسٹمر سپورٹ",
+        accessibility: "رسائی",
+        accessibilityDesc: "سب کے لئے خدمات",
+        meetTeam: "ہماری ٹیم سے ملیں",
+        rights: "جملہ حقوق محفوظ ہیں۔"
       }
     };
 
@@ -198,14 +340,16 @@
 
     function applyLang() {
       const t = translations[currentLang];
+      if (!t) { currentLang = "en"; return; }
       document.querySelectorAll("[data-key]").forEach(el => {
-        el.textContent = t[el.dataset.key];
+        if (t[el.dataset.key]) el.textContent = t[el.dataset.key];
       });
-      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+      const langSelect = document.getElementById("langSelect");
+      if (langSelect) langSelect.value = currentLang;
     }
 
-    function toggleLang() {
-      currentLang = currentLang === "en" ? "hi" : "en";
+    function changeLang(lang) {
+      currentLang = lang;
       localStorage.setItem("lang", currentLang);
       applyLang();
     }

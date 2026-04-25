@@ -168,6 +168,12 @@
   </style>
 </head>
 <body>
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;text-align:center;"><div><h1>⚠️ Please Start the Server</h1><p>Open this site via <a href="http://localhost:5000">http://localhost:5000</a></p><p>Run: <code>npm start</code> in the project folder</p></div></div>';
+      throw new Error('File protocol detected');
+    }
+  </script>
   <div class="homepage">
     <nav class="homepage-nav">
       <div class="nav-brand" style="color: white;">🚀 Digital Seva</div>
@@ -177,7 +183,19 @@
         <a href="plans.html">Plans</a>
         <a href="contact.html">Contact</a>
         <a href="login.html" class="cta-btn primary" style="padding: 8px 25px; font-size: 0.9rem;">Login</a>
-        <button class="lang-switch" onclick="toggleLang()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
+        <select id="langSelect" onchange="changeLang(this.value)" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem;">
+          <option value="en" style="color: black;">English</option>
+          <option value="hi" style="color: black;">हिंदी</option>
+          <option value="ta" style="color: black;">தமிழ்</option>
+          <option value="te" style="color: black;">తెలుగు</option>
+          <option value="bn" style="color: black;">বাংলা</option>
+          <option value="mr" style="color: black;">मराठी</option>
+          <option value="gu" style="color: black;">ગુજરાતી</option>
+          <option value="kn" style="color: black;">ಕನ್ನಡ</option>
+          <option value="ml" style="color: black;">മലയാളം</option>
+          <option value="pa" style="color: black;">ਪੰਜਾਬੀ</option>
+          <option value="ur" style="color: black;">اردو</option>
+        </select>
       </div>
     </nav>
 
@@ -189,6 +207,7 @@
           <a href="signup.html" class="cta-btn primary" data-key="getStarted">Get Started</a>
           <a href="about.html" class="cta-btn secondary" data-key="learnMore">Learn More</a>
         </div>
+      </div>
     </section>
   </div>
 
@@ -197,15 +216,19 @@
       <div class="stat-item">
         <div class="number">10K+</div>
         <div class="label" data-key="happyUsers">Happy Users</div>
+      </div>
       <div class="stat-item">
         <div class="number">50K+</div>
         <div class="label" data-key="servicesDone">Services Done</div>
+      </div>
       <div class="stat-item">
         <div class="number">8+</div>
         <div class="label" data-key="digitalServices">Digital Services</div>
+      </div>
       <div class="stat-item">
         <div class="number">98%</div>
         <div class="label" data-key="satisfaction">Satisfaction</div>
+      </div>
     </div>
   </section>
 
@@ -243,6 +266,7 @@
         <h3 data-key="feature6">Train Booking</h3>
         <p data-key="feature6Desc">Book train tickets easily</p>
       </div>
+    </div>
   </section>
 
   <section class="how-it-works">
@@ -268,6 +292,7 @@
         <h4 data-key="step4">Get Done!</h4>
         <p data-key="step4Desc">Service processed quickly</p>
       </div>
+    </div>
   </section>
 
   <section class="testimonials">
@@ -277,14 +302,17 @@
         <div class="stars">★★★★★</div>
         <p data-key="review1">"Digital Seva made my PAN card application so easy. Highly recommended!"</p>
         <div class="author">- Rahul K.</div>
+      </div>
       <div class="testimonial-card">
         <div class="stars">★★★★★</div>
         <p data-key="review2">"I recharge my mobile and pay bills from one place. Very convenient."</p>
         <div class="author">- Priya S.</div>
+      </div>
       <div class="testimonial-card">
         <div class="stars">★★★★★</div>
         <p data-key="review3">"Hindi support is amazing. My parents can use it easily now."</p>
         <div class="author">- Amit M.</div>
+      </div>
     </div>
   </section>
 
@@ -320,6 +348,7 @@
         <a href="privacy.html">Terms of Service</a>
         <a href="privacy.html">Security</a>
       </div>
+    </div>
     <div class="footer-bottom">
       <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
     </div>
@@ -334,10 +363,12 @@
       </div>
       <div class="chatbot-messages" id="chatbotMessages">
         <div class="message bot">Hello! I'm your Digital Seva assistant. How can I help you today?</div>
+      </div>
       <div class="chatbot-input">
         <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatbotMessage()">
         <button onclick="sendChatbotMessage()">➤</button>
       </div>
+    </div>
     <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
   </div>
 
@@ -423,9 +454,9 @@
         review1: "डिजिटल सेवा ने मेरा पैन कार्ड आवेदन बहुत आसान बना दिया। बहुत बढ़िया!",
         review2: "मैं एक ही जगह से मोबाइल रिचार्ज और बिल भुगतान करता हूं। बहुत सुविधाजनक।",
         review3: "हिंदी सपोर्ट बहुत अच्छा है। मेरे माता-पिता अब इसे आसानी से उपयोग कर सकते हैं।",
-        ready: "शुरू करने के लिए तैयार हैं?",
+
         joinThousands: "हजारों उपयोगकर्ताओं के साथ अपनी डिजिटल जीवन सरल बनाएं",
-        signupNow: "अभी साइन अप करें - यह मुफ्त है",
+
         quickLinks: "त्वरित लिंक",
         services: "सेवाएं",
         legal: "कानूनी",
@@ -437,14 +468,16 @@
 
     function applyLang() {
       const t = translations[currentLang];
+      if (!t) { currentLang = "en"; return; }
       document.querySelectorAll("[data-key]").forEach(el => {
-        el.textContent = t[el.dataset.key];
+        if (t[el.dataset.key]) el.textContent = t[el.dataset.key];
       });
-      document.querySelector(".lang-switch").textContent = currentLang === "en" ? "हिंदी" : "English";
+      const langSelect = document.getElementById("langSelect");
+      if (langSelect) langSelect.value = currentLang;
     }
 
-    function toggleLang() {
-      currentLang = currentLang === "en" ? "hi" : "en";
+    function changeLang(lang) {
+      currentLang = lang;
       localStorage.setItem("lang", currentLang);
       applyLang();
     }
@@ -482,3 +515,4 @@
   </script>
 </body>
 </html>
+

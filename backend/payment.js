@@ -7,6 +7,8 @@ const paymentSchema = new mongoose.Schema({
   upiId: { type: String },
   status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
   transactionId: { type: String, unique: true },
+  razorpayOrderId: { type: String },
+  razorpayPaymentId: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 

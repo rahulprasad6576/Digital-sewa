@@ -6,11 +6,24 @@
   <title>Payment - Digital Seva</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .payment-page { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
-    .payment-form { background: var(--card-bg); padding: 35px; border-radius: 20px; box-shadow: var(--shadow); }
+    .payment-page { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+    .payment-form { background: var(--card-bg); padding: 35px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 25px; }
     .amount-display { font-size: 2rem; color: var(--primary); font-weight: 700; text-align: center; margin: 20px 0; }
-    .upi-display { background: var(--bg); padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; }
-    .upi-id { font-size: 1.3rem; font-weight: 600; color: var(--primary); letter-spacing: 1px; }
+    .mode-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+    .mode-badge.demo { background: #fff3cd; color: #856404; }
+    .mode-badge.live { background: #d4edda; color: #155724; }
+    .mode-badge.error { background: #f8d7da; color: #721c24; }
+    .recharge-section { background: var(--card-bg); padding: 35px; border-radius: 20px; box-shadow: var(--shadow); }
+    .operator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 15px 0; }
+    .operator-btn { padding: 12px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text); cursor: pointer; transition: all 0.2s; }
+    .operator-btn:hover, .operator-btn.active { border-color: var(--primary); background: rgba(102,126,234,0.1); }
+    .tab-buttons { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 12px 24px; border: none; border-radius: 12px; background: var(--bg); color: var(--text); cursor: pointer; font-weight: 600; }
+    .tab-btn.active { background: var(--primary); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .auto-detect-info { color: var(--success); font-size: 0.85rem; margin-top: 5px; display: none; }
+    .status-link { color: var(--primary); cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
   </style>
 </head>
 <body>
@@ -25,78 +38,230 @@
   </nav>
 
   <div class="payment-page">
-    <h1 style="text-align: center; color: var(--text); margin-bottom: 25px;" data-key="paymentTitle">Make Payment</h1>
-    
-    <div class="payment-form">
-      <div class="input-group">
-        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="serviceLabel">Service</label>
-        <select id="serviceSelect" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
-          <option value="pan">PAN Card Service</option>
-          <option value="aadhaar">Aadhaar Service</option>
-          <option value="electricity">Electricity Bill</option>
-          <option value="water">Water Bill</option>
-          <option value="mobile">Mobile Recharge</option>
-          <option value="dth">DTH Recharge</option>
-          <option value="gas">Gas Booking</option>
-          <option value="train">Train Booking</option>
-        </select>
-      </div>
+    <h1 style="text-align: center; color: var(--text); margin-bottom: 10px;" data-key="paymentTitle">Payments & Recharge</h1>
+    <div style="text-align: center; margin-bottom: 25px;">
+      <span id="modeBadge" class="mode-badge demo">Loading...</span>
+    </div>
 
-      <div class="input-group">
-        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="amountLabel">Amount (₹)</label>
-        <input id="amount" type="number" value="100" min="1" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
-      </div>
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('payment')" data-key="tabPayment">Service Payment</button>
+      <button class="tab-btn" onclick="switchTab('mobile')" data-key="tabMobile">Mobile Recharge</button>
+      <button class="tab-btn" onclick="switchTab('dth')" data-key="tabDth">DTH Recharge</button>
+    </div>
 
-      <div class="upi-display">
-        <p style="color: var(--text-light); margin-bottom: 10px;" data-key="payVia">Pay via UPI</p>
-        <div class="upi-id">digitalseva@upi</div>
-        <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 10px;" data-key="demoMode">Demo Mode - No real money deducted</p>
-      </div>
+    <!-- Service Payment Tab -->
+    <div id="tab-payment" class="tab-content active">
+      <div class="payment-form">
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="serviceLabel">Service</label>
+          <select id="serviceSelect" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+            <option value="pan">PAN Card Service</option>
+            <option value="aadhaar">Aadhaar Service</option>
+            <option value="electricity">Electricity Bill</option>
+            <option value="water">Water Bill</option>
+            <option value="gas">Gas Booking</option>
+            <option value="train">Train Booking</option>
+          </select>
+        </div>
 
-      <div class="input-group">
-        <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="upiIdLabel">Your UPI ID (Optional)</label>
-        <input id="upiId" type="text" placeholder="yourname@upi" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
-      </div>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="amountLabel">Amount (₹)</label>
+          <input id="amount" type="number" value="100" min="1" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
 
-      <button class="btn" onclick="makePayment()" data-key="payNow">Pay Now</button>
-      <p id="paymentResult" style="margin-top: 15px; text-align: center;"></p>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;" data-key="upiIdLabel">Your UPI ID (Optional)</label>
+          <input id="upiId" type="text" placeholder="yourname@upi" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
+
+        <button class="btn" onclick="makePayment()" data-key="payNow">Pay Now</button>
+        <p id="paymentResult" style="margin-top: 15px; text-align: center;"></p>
+      </div>
+    </div>
+
+    <!-- Mobile Recharge Tab -->
+    <div id="tab-mobile" class="tab-content">
+      <div class="recharge-section">
+        <h3 style="color: var(--text); margin-bottom: 15px;" data-key="mobileRechargeTitle">Mobile Recharge</h3>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Mobile Number</label>
+          <input id="mobileNumber" type="tel" placeholder="10 digit mobile number" maxlength="10" onblur="detectOperator()" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+          <div id="autoDetectInfo" class="auto-detect-info"></div>
+        </div>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Select Operator</label>
+          <div class="operator-grid">
+            <button class="operator-btn" onclick="selectOperator(this, 'Airtel')">Airtel</button>
+            <button class="operator-btn" onclick="selectOperator(this, 'Jio')">Jio</button>
+            <button class="operator-btn" onclick="selectOperator(this, 'Vi')">Vi</button>
+            <button class="operator-btn" onclick="selectOperator(this, 'BSNL')">BSNL</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Amount (₹)</label>
+          <input id="mobileAmount" type="number" placeholder="Min ₹10" min="10" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
+        <button class="btn" onclick="doMobileRecharge()">Recharge Now</button>
+        <p id="mobileResult" style="margin-top: 15px; text-align: center;"></p>
+      </div>
+    </div>
+
+    <!-- DTH Recharge Tab -->
+    <div id="tab-dth" class="tab-content">
+      <div class="recharge-section">
+        <h3 style="color: var(--text); margin-bottom: 15px;" data-key="dthRechargeTitle">DTH Recharge</h3>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Subscriber ID</label>
+          <input id="dthSubscriberId" type="text" placeholder="Enter subscriber ID" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Select Operator</label>
+          <div class="operator-grid">
+            <button class="operator-btn" onclick="selectDthOperator(this, 'Tata Play')">Tata Play</button>
+            <button class="operator-btn" onclick="selectDthOperator(this, 'Dish TV')">Dish TV</button>
+            <button class="operator-btn" onclick="selectDthOperator(this, 'Airtel DTH')">Airtel DTH</button>
+            <button class="operator-btn" onclick="selectDthOperator(this, 'D2H')">D2H</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Amount (₹)</label>
+          <input id="dthAmount" type="number" placeholder="Min ₹10" min="10" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+        </div>
+        <button class="btn" onclick="doDthRecharge()">Recharge Now</button>
+        <p id="dthResult" style="margin-top: 15px; text-align: center;"></p>
+      </div>
     </div>
 
     <div style="margin-top: 30px;">
       <h3 style="color: var(--text); margin-bottom: 15px;" data-key="recentPayments">Recent Payments</h3>
       <div id="paymentList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
   </div>
 
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
     const translations = {
       en: {
-        paymentTitle: "Make Payment",
+        paymentTitle: "Payments & Recharge",
+        tabPayment: "Service Payment",
+        tabMobile: "Mobile Recharge",
+        tabDth: "DTH Recharge",
         serviceLabel: "Service",
         amountLabel: "Amount (₹)",
-        payVia: "Pay via UPI",
-        demoMode: "Demo Mode - No real money deducted",
         upiIdLabel: "Your UPI ID (Optional)",
         payNow: "Pay Now",
         recentPayments: "Recent Payments",
-        paymentSuccess: "Payment Successful! Transaction ID: "
+        mobileRechargeTitle: "Mobile Recharge",
+        dthRechargeTitle: "DTH Recharge",
+        paymentSuccess: "Payment Successful! Transaction ID: ",
+        notConfigured: "Payment Gateway Not Configured",
+        liveMode: "Live Mode",
+        demoMode: "Demo Mode"
       },
       hi: {
-        paymentTitle: "भुगतान करें",
+        paymentTitle: "भुगतान और रिचार्ज",
+        tabPayment: "सेवा भुगतान",
+        tabMobile: "मोबाइल रिचार्ज",
+        tabDth: "डीटीएच रिचार्ज",
         serviceLabel: "सेवा",
         amountLabel: "राशि (₹)",
-        payVia: "यूपीआई से भुगतान करें",
-        demoMode: "डेमो मोड - कोई असली पैसा नहीं कटेगा",
         upiIdLabel: "आपका यूपीआई आईडी (वैकल्पिक)",
         payNow: "अभी भुगतान करें",
         recentPayments: "हाल के भुगतान",
-        paymentSuccess: "भुगतान सफल! ट्रांजैक्शन आईडी: "
+        mobileRechargeTitle: "मोबाइल रिचार्ज",
+        dthRechargeTitle: "डीटीएच रिचार्ज",
+        paymentSuccess: "भुगतान सफल! ट्रांजैक्शन आईडी: ",
+        notConfigured: "भुगतान गेटवे कॉन्फ़िगर नहीं है",
+        liveMode: "लाइव मोड",
+        demoMode: "डेमो मोड"
       }
     };
 
     let currentLang = localStorage.getItem("lang") || "en";
     const token = localStorage.getItem("token");
+    let selectedOperator = null;
+    let selectedDthOperator = null;
+    let paymentConfig = { paymentEnabled: false, mode: "development" };
 
     if (!token) location.href = "login.html";
+
+    async function loadPaymentConfig() {
+      try {
+        const res = await fetch("/payment/config", { headers: { "Authorization": token } });
+        paymentConfig = await res.json();
+        const badge = document.getElementById("modeBadge");
+        if (paymentConfig.paymentEnabled) {
+          badge.textContent = translations[currentLang].liveMode;
+          badge.className = "mode-badge live";
+        } else {
+          badge.textContent = translations[currentLang].notConfigured;
+          badge.className = "mode-badge error";
+        }
+      } catch (err) {
+        console.error("Payment config error:", err);
+        const badge = document.getElementById("modeBadge");
+        badge.textContent = "Error loading config";
+        badge.className = "mode-badge error";
+      }
+    }
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+      const content = document.getElementById("tab-" + tab);
+      if (content) content.classList.add("active");
+      if (btn && btn.classList) {
+        btn.classList.add("active");
+      } else {
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          const onclick = b.getAttribute('onclick') || '';
+          if (onclick.includes("switchTab('" + tab + "'") || onclick.includes('switchTab("' + tab + '"')) {
+            b.classList.add('active');
+          }
+        });
+      }
+    }
+
+    function selectOperator(btn, operator) {
+      document.querySelectorAll("#tab-mobile .operator-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedOperator = operator;
+    }
+
+    function selectDthOperator(btn, operator) {
+      document.querySelectorAll("#tab-dth .operator-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedDthOperator = operator;
+    }
+
+    async function detectOperator() {
+      const number = document.getElementById("mobileNumber").value;
+      const infoEl = document.getElementById("autoDetectInfo");
+      if (number.length !== 10) {
+        infoEl.style.display = "none";
+        return;
+      }
+      try {
+        const res = await fetch("/operator/detect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ number })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          infoEl.textContent = `Detected: ${data.operator}, Circle: ${data.circle}`;
+          infoEl.style.display = "block";
+          // Auto-select operator button
+          document.querySelectorAll("#tab-mobile .operator-btn").forEach(b => {
+            if (b.textContent.trim() === data.operator) {
+              b.click();
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Operator detection error:", err);
+      }
+    }
 
     function applyLang() {
       const t = translations[currentLang];
@@ -110,6 +275,7 @@
       currentLang = currentLang === "en" ? "hi" : "en";
       localStorage.setItem("lang", currentLang);
       applyLang();
+      loadPaymentConfig();
     }
 
     function toggleDarkMode() {
@@ -125,22 +291,306 @@
 
     async function makePayment() {
       const service = document.getElementById("serviceSelect").value;
-      const amount = document.getElementById("amount").value;
-      const upiId = document.getElementById("upiId").value;
+      const amount = parseInt(document.getElementById("amount").value);
+      const resultEl = document.getElementById("paymentResult");
+      const payBtn = document.querySelector(".btn[onclick='makePayment()']");
+
+      if (!amount || amount < 1) {
+        resultEl.textContent = "Please enter a valid amount";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      if (!paymentConfig.paymentEnabled || !paymentConfig.razorpayKeyId) {
+        resultEl.textContent = "Payment gateway is not configured. Please contact admin to set up Razorpay.";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      // Check if Razorpay script loaded
+      if (typeof Razorpay === 'undefined') {
+        resultEl.textContent = "Razorpay checkout script failed to load. Please refresh the page.";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      resultEl.textContent = "Creating order...";
+      resultEl.style.color = "var(--primary)";
+      if (payBtn) { payBtn.disabled = true; payBtn.textContent = "Processing..."; }
 
       try {
-        const res = await fetch("/payment", {
+        const orderRes = await fetch("/payment/order", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": token },
-          body: JSON.stringify({ amount: parseInt(amount), service, upiId })
+          body: JSON.stringify({ amount, service })
+        });
+        const orderData = await orderRes.json();
+
+        if (!orderRes.ok) {
+          resultEl.textContent = orderData.message || "Failed to create payment order";
+          resultEl.style.color = "var(--error)";
+          if (payBtn) { payBtn.disabled = false; payBtn.textContent = currentLang === "hi" ? "अभी भुगतान करें" : "Pay Now"; }
+          return;
+        }
+
+        resultEl.textContent = "";
+        const options = {
+          key: orderData.razorpayKeyId,
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "Digital Seva",
+          description: service + " Service",
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            resultEl.textContent = "Verifying payment...";
+            resultEl.style.color = "var(--primary)";
+            const verifyRes = await fetch("/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": token },
+              body: JSON.stringify({
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                amount,
+                service
+              })
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyRes.ok) {
+              resultEl.textContent = verifyData.message + " | TXN: " + verifyData.transactionId;
+              resultEl.style.color = "var(--success)";
+              loadPayments();
+            } else {
+              resultEl.textContent = verifyData.message || "Payment verification failed";
+              resultEl.style.color = "var(--error)";
+            }
+            if (payBtn) { payBtn.disabled = false; payBtn.textContent = currentLang === "hi" ? "अभी भुगतान करें" : "Pay Now"; }
+          },
+          prefill: {
+            name: localStorage.getItem("userName") || "",
+          },
+          theme: { color: "#667eea" }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+        rzp.on('payment.failed', function (response) {
+          resultEl.textContent = "Payment failed: " + response.error.description;
+          resultEl.style.color = "var(--error)";
+          if (payBtn) { payBtn.disabled = false; payBtn.textContent = currentLang === "hi" ? "अभी भुगतान करें" : "Pay Now"; }
+        });
+      } catch (err) {
+        resultEl.textContent = "Payment error: " + err.message;
+        resultEl.style.color = "var(--error)";
+        if (payBtn) { payBtn.disabled = false; payBtn.textContent = currentLang === "hi" ? "अभी भुगतान करें" : "Pay Now"; }
+      }
+    }
+
+    async function doMobileRecharge() {
+      const number = document.getElementById("mobileNumber").value;
+      const amount = parseInt(document.getElementById("mobileAmount").value);
+      const resultEl = document.getElementById("mobileResult");
+      const btn = document.querySelector("#tab-mobile .btn");
+
+      if (!number || number.length !== 10) {
+        resultEl.textContent = "Please enter a valid 10-digit mobile number";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+      if (!amount || amount < 10) {
+        resultEl.textContent = "Minimum recharge amount is ₹10";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+      if (!selectedOperator) {
+        resultEl.textContent = "Please select an operator";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      // Pay via Razorpay first, then do recharge
+      await payWithRazorpay({
+        amount,
+        service: "Mobile Recharge - " + selectedOperator,
+        resultEl,
+        btn,
+        onSuccess: async (paymentId) => {
+          resultEl.textContent = "Processing recharge...";
+          resultEl.style.color = "var(--primary)";
+          try {
+            const res = await fetch("/recharge/mobile", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": token },
+              body: JSON.stringify({ number, amount, operator: selectedOperator, paymentId })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              resultEl.innerHTML = data.message + ` <span class="status-link" onclick="checkRechargeStatus('${data.service._id}')">Check Status</span>`;
+              resultEl.style.color = "var(--success)";
+              loadPayments();
+            } else {
+              resultEl.textContent = data.message || "Recharge failed";
+              resultEl.style.color = "var(--error)";
+            }
+          } catch (err) {
+            resultEl.textContent = "Recharge failed: " + err.message;
+            resultEl.style.color = "var(--error)";
+          }
+        }
+      });
+    }
+
+    async function doDthRecharge() {
+      const subscriberId = document.getElementById("dthSubscriberId").value;
+      const amount = parseInt(document.getElementById("dthAmount").value);
+      const resultEl = document.getElementById("dthResult");
+      const btn = document.querySelector("#tab-dth .btn");
+
+      if (!subscriberId) {
+        resultEl.textContent = "Please enter subscriber ID";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+      if (!amount || amount < 10) {
+        resultEl.textContent = "Minimum recharge amount is ₹10";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+      if (!selectedDthOperator) {
+        resultEl.textContent = "Please select an operator";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      // Pay via Razorpay first, then do recharge
+      await payWithRazorpay({
+        amount,
+        service: "DTH Recharge - " + selectedDthOperator,
+        resultEl,
+        btn,
+        onSuccess: async (paymentId) => {
+          resultEl.textContent = "Processing recharge...";
+          resultEl.style.color = "var(--primary)";
+          try {
+            const res = await fetch("/recharge/dth", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": token },
+              body: JSON.stringify({ subscriberId, amount, operator: selectedDthOperator, paymentId })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              resultEl.innerHTML = data.message + ` <span class="status-link" onclick="checkRechargeStatus('${data.service._id}')">Check Status</span>`;
+              resultEl.style.color = "var(--success)";
+              loadPayments();
+            } else {
+              resultEl.textContent = data.message || "Recharge failed";
+              resultEl.style.color = "var(--error)";
+            }
+          } catch (err) {
+            resultEl.textContent = "Recharge failed: " + err.message;
+            resultEl.style.color = "var(--error)";
+          }
+        }
+      });
+    }
+
+    // Shared Razorpay payment helper for recharges
+    async function payWithRazorpay({ amount, service, resultEl, btn, onSuccess }) {
+      if (!paymentConfig.paymentEnabled || !paymentConfig.razorpayKeyId) {
+        resultEl.textContent = "Payment gateway is not configured.";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+      if (typeof Razorpay === 'undefined') {
+        resultEl.textContent = "Razorpay checkout script failed to load. Please refresh.";
+        resultEl.style.color = "var(--error)";
+        return;
+      }
+
+      resultEl.textContent = "Creating payment order...";
+      resultEl.style.color = "var(--primary)";
+      if (btn) { btn.disabled = true; }
+
+      try {
+        const orderRes = await fetch("/payment/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ amount, service })
+        });
+        const orderData = await orderRes.json();
+
+        if (!orderRes.ok) {
+          resultEl.textContent = orderData.message || "Failed to create payment order";
+          resultEl.style.color = "var(--error)";
+          if (btn) { btn.disabled = false; }
+          return;
+        }
+
+        resultEl.textContent = "Waiting for payment...";
+        const options = {
+          key: orderData.razorpayKeyId,
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "Digital Seva",
+          description: service,
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            resultEl.textContent = "Verifying payment...";
+            const verifyRes = await fetch("/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": token },
+              body: JSON.stringify({
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                amount,
+                service
+              })
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyRes.ok) {
+              resultEl.textContent = "Payment successful! Processing recharge...";
+              resultEl.style.color = "var(--success)";
+              loadPayments();
+              await onSuccess(response.razorpay_payment_id);
+            } else {
+              resultEl.textContent = verifyData.message || "Payment verification failed";
+              resultEl.style.color = "var(--error)";
+              if (btn) { btn.disabled = false; }
+            }
+          },
+          prefill: { name: localStorage.getItem("userName") || "" },
+          theme: { color: "#667eea" }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+        rzp.on('payment.failed', function (response) {
+          resultEl.textContent = "Payment failed: " + response.error.description;
+          resultEl.style.color = "var(--error)";
+          if (btn) { btn.disabled = false; }
+        });
+      } catch (err) {
+        resultEl.textContent = "Payment error: " + err.message;
+        resultEl.style.color = "var(--error)";
+        if (btn) { btn.disabled = false; }
+      }
+    }
+
+    async function checkRechargeStatus(serviceId) {
+      const resultEl = document.getElementById("mobileResult") || document.getElementById("dthResult");
+      try {
+        const res = await fetch("/recharge/status/" + serviceId, {
+          headers: { "Authorization": token }
         });
         const data = await res.json();
-        document.getElementById("paymentResult").textContent = data.message;
-        document.getElementById("paymentResult").style.color = "var(--success)";
-        loadPayments();
+        if (res.ok && data.providerStatus) {
+          alert(`Recharge Status: ${data.providerStatus.status}\nMessage: ${data.providerStatus.message}`);
+        } else {
+          alert("Could not retrieve status.");
+        }
       } catch (err) {
-        document.getElementById("paymentResult").textContent = "Payment failed";
-        document.getElementById("paymentResult").style.color = "var(--error)";
+        alert("Status check failed: " + err.message);
       }
     }
 
@@ -152,6 +602,10 @@
         const data = await res.json();
         const list = document.getElementById("paymentList");
         list.innerHTML = "";
+        if (!data.payments || data.payments.length === 0) {
+          list.innerHTML = '<p style="color: var(--text-light); text-align: center;">No payments yet</p>';
+          return;
+        }
         data.payments.forEach(p => {
           const div = document.createElement("div");
           div.style.cssText = "background: var(--card-bg); padding: 15px; border-radius: 10px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;";
@@ -159,9 +613,11 @@
             <div>
               <strong style="color: var(--text);">${p.service}</strong>
               <div style="color: var(--text-light); font-size: 0.85rem;">${new Date(p.createdAt).toLocaleDateString()}</div>
+            </div>
             <div style="text-align: right;">
               <div style="color: var(--primary); font-weight: 600;">₹${p.amount}</div>
               <div style="color: ${p.status === 'completed' ? 'var(--success)' : 'var(--warning)'}; font-size: 0.8rem;">${p.status}</div>
+            </div>
           `;
           list.appendChild(div);
         });
@@ -174,8 +630,26 @@
       document.documentElement.classList.add("dark-mode");
     }
 
+    // Apply language and load initial data
     applyLang();
+    loadPaymentConfig();
     loadPayments();
+
+    // If URL contains ?tab=mobile or ?tab=dth or ?tab=payment, switch to that tab.
+    (function() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const tab = params.get('tab');
+        if (tab) {
+          const allowed = ['payment', 'mobile', 'dth'];
+          const t = allowed.includes(tab) ? tab : 'payment';
+          setTimeout(() => switchTab(t), 50);
+        }
+      } catch (e) {
+        // ignore
+      }
+    })();
   </script>
 </body>
 </html>
+

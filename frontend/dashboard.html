@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Digital Seva</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .bill-form { display: flex; flex-direction: column; gap: 12px; }
+    .bill-form input, .bill-form select {
+      width: 100%; padding: 12px; border: 2px solid var(--border);
+      border-radius: 10px; background: var(--card-bg); color: var(--text);
+    }
+    .bill-result { background: var(--bg); padding: 15px; border-radius: 10px; margin-top: 10px; }
+    .pay-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -23,6 +32,10 @@
         <option value="bn">বাংলা</option>
         <option value="mr">मराठी</option>
         <option value="gu">ગુજરાતી</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="ml">മലയാളം</option>
+        <option value="pa">ਪੰਜਾਬੀ</option>
+        <option value="ur">اردو</option>
       </select>
       <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
       <button onclick="logout()" style="background: var(--error); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Logout</button>
@@ -121,10 +134,7 @@
         <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text);">✕</button>
       </div>
       <div id="modalContent">
-        <div class="input-group">
-          <input id="serviceDetail" type="text" placeholder="Enter details" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
-        </div>
-        <button class="btn" onclick="submitService()" style="margin-top: 15px;">Submit Request</button>
+        <!-- Dynamic content inserted here -->
       </div>
     </div>
   </div>
@@ -304,6 +314,90 @@
         train: "ટ્રેન",
         trainDesc: "ટ્રેન ટિકિટ બુકિંગ",
         rights: "બધા હક્કો રાખવામાં આવેલા છે."
+      },
+      kn: {
+        welcome: "ഡിജിറ്റൽ സേവയിലേക്ക് സ്വാഗതം",
+        chooseService: "ആരംഭിക്കാൻ ഒരു സേവനം തിരഞ്ഞെടുക്കുക",
+        panCard: "പാൻ കാർഡ്",
+        panDesc: "പാൻ അപേക്ഷ, അപ്ഡേറ്റ്",
+        aadhaar: "ആധാർ",
+        aadhaarDesc: "ആധാർ അപ്ഡേറ്റ്",
+        electricity: "വിദ്യുത്",
+        electricityDesc: "വൈദ്യുത ബിൽ അടയ്ക്കുക",
+        water: "വെള്ള ബിൽ",
+        waterDesc: "വെള്ള ബിൽ അടയ്ക്കുക",
+        mobile: "മൊബൈൽ",
+        mobileDesc: "മൊബൈൽ റീചാർജ്",
+        dth: "ഡിടിഎച്ച്",
+        dthDesc: "ഡിടിഎച്ച് റീചാർജ്",
+        gas: "ഗ്യാസ് ബുക്കിംഗ്",
+        gasDesc: "എൽപിജി സിലിണ്ടർ ബുക്ക്",
+        train: "ട്രെയിൻ",
+        trainDesc: "ട്രെയിൻ ടിക്കറ്റ് ബുക്കിംഗ്",
+        rights: "എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം."
+      },
+      ml: {
+        welcome: "ഡിജിറ്റൽ സേവയിലേക്ക് സ്വാഗതം",
+        chooseService: "ആരംഭിക്കാൻ ഒരു സേവനം തിരഞ്ഞെടുക്കുക",
+        panCard: "പാൻ കാർഡ്",
+        panDesc: "പാൻ അപേക്ഷ, അപ്ഡേറ്റ്",
+        aadhaar: "ആധാർ",
+        aadhaarDesc: "ആധാർ അപ്ഡേറ്റ്",
+        electricity: "വിദ്യുത്",
+        electricityDesc: "വൈദ്യുത ബിൽ അടയ്ക്കുക",
+        water: "വെള്ള ബിൽ",
+        waterDesc: "വെള്ള ബിൽ അടയ്ക്കുക",
+        mobile: "മൊബൈൽ",
+        mobileDesc: "മൊബൈൽ റീചാർജ്",
+        dth: "ഡിടിഎച്ച്",
+        dthDesc: "ഡിടിഎച്ച് റീചാർജ്",
+        gas: "ഗ്യാസ് ബുക്കിംഗ്",
+        gasDesc: "എൽപിജി സിലിണ്ടർ ബുക്ക്",
+        train: "ട്രെയിൻ",
+        trainDesc: "ട്രെയിൻ ടിക്കറ്റ് ബുക്കിംഗ്",
+        rights: "എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം."
+      },
+      pa: {
+        welcome: "ਡਿਜੀਟਲ ਸੇਵਾ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
+        chooseService: "ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਸੇਵਾ ਚੁਣੋ",
+        panCard: "ਪੈਨ ਕਾਰਡ",
+        panDesc: "ਪੈਨ ਅਰਜ਼ੀ, ਅਪਡੇਟ",
+        aadhaar: "ਆਧਾਰ",
+        aadhaarDesc: "ਆਧਾਰ ਅਪਡੇਟ",
+        electricity: "ਬਿਜਲੀ",
+        electricityDesc: "ਬਿਜਲੀ ਦੇ ਬਿਲ ਦਾ ਭੁਗਤਾਨ",
+        water: "ਪਾਣੀ ਦਾ ਬਿੱਲ",
+        waterDesc: "ਪਾਣੀ ਦੇ ਬਿਲ ਦਾ ਭੁਗਤਾਨ",
+        mobile: "ਮੋਬਾਈਲ",
+        mobileDesc: "ਮੋਬਾਈਲ ਰੀਚਾਰਜ",
+        dth: "ਡੀਟੀਐਚ",
+        dthDesc: "ਡੀਟੀਐਚ ਰੀਚਾਰਜ",
+        gas: "ਗੈਸ ਬੁਕਿੰਗ",
+        gasDesc: "ਐਲਪੀਜੀ ਸਿਲੰਡਰ ਬੁੱਕ",
+        train: "ਟ੍ਰੇਨ",
+        trainDesc: "ਟ੍ਰੇਨ ਟਿਕਟ ਬੁਕਿੰਗ",
+        rights: "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।"
+      },
+      ur: {
+        welcome: "ڈیجیٹل سیوا میں خوش آمدید",
+        chooseService: "شروع کرنے کے لیے ایک سروس منتخب کریں",
+        panCard: "پین کارڈ",
+        panDesc: "پین اپلائی، اپڈیٹ",
+        aadhaar: "آधار",
+        aadhaarDesc: "آधار اپڈیٹ",
+        electricity: "بجلی",
+        electricityDesc: "بجلی کا بل ادا کریں",
+        water: "پانی کا بل",
+        waterDesc: "پانی کا بل ادا کریں",
+        mobile: "موبائل",
+        mobileDesc: "موبائل ریچارج",
+        dth: "ڈیٹی ایچ",
+        dthDesc: "ڈیٹی ایچ ریچارج",
+        gas: "گیس بکنگ",
+        gasDesc: "ایل پی جی سلنڈر بک کریں",
+        train: "ٹرین",
+        trainDesc: "ٹرین ٹکٹ بکنگ",
+        rights: "جملہ حقوق محفوظ ہیں۔"
       }
     };
 
@@ -360,7 +454,7 @@
         const list = document.getElementById("notifList");
         list.innerHTML = "";
 
-        if (data.notifications.length === 0) {
+        if (!data.notifications || data.notifications.length === 0) {
           list.innerHTML = `<p style="color: var(--text-light); text-align: center;">No notifications</p>`;
           document.getElementById("notifBadge").style.display = "none";
           return;
@@ -382,24 +476,108 @@
     }
 
     function openService(type) {
+      if (type === "mobile" || type === "dth") {
+        const tab = encodeURIComponent(type);
+        location.assign("payment.html?tab=" + tab);
+        return;
+      }
       currentService = type;
       const titles = {
         pan: "PAN Card Service",
         aadhaar: "Aadhaar Service",
         electricity: "Electricity Bill",
         water: "Water Bill",
-        mobile: "Mobile Recharge",
-        dth: "DTH Recharge",
         gas: "Gas Booking",
         train: "Train Booking"
       };
       document.getElementById("modalTitle").textContent = titles[type];
+      
+      const content = document.getElementById("modalContent");
+      if (type === "electricity" || type === "water" || type === "gas") {
+        // Bill payment form
+        content.innerHTML = `
+          <div class="bill-form">
+            <input id="billConsumerId" type="text" placeholder="Consumer ID / Account Number">
+            <input id="billBiller" type="text" placeholder="Biller Name (e.g. BSES, DJB)">
+            <button class="btn" onclick="fetchBill('${type}')" style="margin-top: 5px;">Fetch Bill</button>
+            <div id="billResult"></div>
+          </div>
+        `;
+      } else {
+        content.innerHTML = `
+          <div class="input-group">
+            <input id="serviceDetail" type="text" placeholder="Enter details" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
+          </div>
+          <button class="btn" onclick="submitService()" style="margin-top: 15px;">Submit Request</button>
+        `;
+      }
       document.getElementById("serviceModal").style.display = "flex";
     }
 
     function closeModal() {
       document.getElementById("serviceModal").style.display = "none";
       currentService = null;
+    }
+
+    async function fetchBill(type) {
+      const consumerId = document.getElementById("billConsumerId").value;
+      const biller = document.getElementById("billBiller").value;
+      const resultEl = document.getElementById("billResult");
+      
+      if (!consumerId) {
+        resultEl.innerHTML = `<p style="color: var(--error);">Please enter Consumer ID</p>`;
+        return;
+      }
+
+      resultEl.innerHTML = `<p style="color: var(--primary);">Fetching bill...</p>`;
+      
+      try {
+        const res = await fetch("/bill/fetch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ type, consumerId, biller })
+        });
+        const data = await res.json();
+        
+        if (res.ok && data.success) {
+          resultEl.innerHTML = `
+            <div class="bill-result">
+              <p><strong>Biller:</strong> ${data.billerName}</p>
+              <p><strong>Customer:</strong> ${data.customerName}</p>
+              <p><strong>Bill Amount:</strong> ₹${data.amount}</p>
+              <p><strong>Due Date:</strong> ${new Date(data.dueDate).toLocaleDateString()}</p>
+              <button class="pay-btn" onclick="payBill('${type}', '${consumerId}', '${biller}', ${data.amount})">Pay ₹${data.amount}</button>
+            </div>
+          `;
+        } else {
+          resultEl.innerHTML = `<p style="color: var(--error);">${data.message || "Failed to fetch bill"}</p>`;
+        }
+      } catch (err) {
+        resultEl.innerHTML = `<p style="color: var(--error);">Error: ${err.message}</p>`;
+      }
+    }
+
+    async function payBill(type, consumerId, biller, amount) {
+      const resultEl = document.getElementById("billResult");
+      resultEl.innerHTML = `<p style="color: var(--primary);">Processing payment...</p>`;
+      
+      try {
+        const res = await fetch("/bill/pay", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": token },
+          body: JSON.stringify({ type, consumerId, biller, amount })
+        });
+        const data = await res.json();
+        
+        if (res.ok && data.service) {
+          resultEl.innerHTML = `<p style="color: var(--success);">${data.message}</p>`;
+          setTimeout(() => { closeModal(); loadActivity(); }, 1500);
+        } else {
+          resultEl.innerHTML = `<p style="color: var(--error);">${data.message || "Payment failed"}</p>`;
+        }
+      } catch (err) {
+        resultEl.innerHTML = `<p style="color: var(--error);">Error: ${err.message}</p>`;
+      }
     }
 
     async function submitService() {
