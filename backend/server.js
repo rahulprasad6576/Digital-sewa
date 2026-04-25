@@ -37,6 +37,14 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : ["http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:5500", "http://127.0.0.1:5500"];
 
+// Allow Render deployment URL dynamically
+if (process.env.RENDER_EXTERNAL_URL) {
+  allowedOrigins.push(process.env.RENDER_EXTERNAL_URL);
+}
+if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+  allowedOrigins.push(`https://${process.env.RENDER_EXTERNAL_HOSTNAME}`);
+}
+
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
