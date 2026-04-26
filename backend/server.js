@@ -404,7 +404,7 @@ app.post("/payment/order", authMiddleware, async (req, res) => {
 
     const { amount, service } = req.body;
     if (!amount || amount < 1) {
-      return res.status(400).json({ message: "Invalid amount" });
+      return res.status(400).json({ message: "Invalid amount. Minimum amount is ₹1 (100 paise)." });
     }
 
     const receipt = "rcpt_" + Date.now();
@@ -418,6 +418,10 @@ app.post("/payment/order", authMiddleware, async (req, res) => {
     });
   } catch (err) {
     console.error("Order creation error:", err.message);
+    // Handle Razorpay authentication failures specifically
+    if (err.statusCode === 401 || err.error?.code === "UNAUTHORIZED") {
+      return res.status(401).json({ message: "Razorpay authentication failed. Check your API keys." });
+    }
     res.status(500).json({ message: "Failed to create payment order: " + err.message });
   }
 });
@@ -430,6 +434,10 @@ app.post("/payment/verify", authMiddleware, async (req, res) => {
       return res.status(503).json({
         message: "Razorpay not configured. Cannot verify payments.",
       });
+    }
+
+    if (!orderId || !paymentId || !signature) {
+      return res.status(400).json({ message: "Missing required fields: orderId, paymentId, and signature are required" });
     }
 
     const isValid = verifyPaymentSignature(orderId, paymentId, signature);
@@ -503,6 +511,15 @@ app.post("/razorpay/webhook", express.raw({ type: "application/json" }), async (
   } catch (err) {
     console.error("Webhook error:", err.message);
     res.status(500).json({ message: "Webhook processing failed" });
+  }
+});
+
+app.get("/payments", authMiddleware, async (req, res) => {
+  try {
+    const payments = await Payment.find({ userId: req.user.userId }).sort({ _id: -1 });
+    res.json({ payments });
+  } catch (err) {
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
