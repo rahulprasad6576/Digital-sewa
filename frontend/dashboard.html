@@ -157,11 +157,6 @@
     <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
   </div>
 
-  <!-- Voice FAB -->
-  <div class="fab-container">
-    <button class="fab-btn" onclick="voiceCommand()" title="Voice Command">🎤</button>
-  </div>
-
   <footer class="footer">
     <p>© 2025 Digital Seva. <span data-key="rights">All rights reserved.</span></p>
   </footer>
@@ -668,31 +663,6 @@
       }
     }
 
-    function voiceCommand() {
-      if (!("webkitSpeechRecognition" in window)) {
-        alert("Voice not supported");
-        return;
-      }
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = currentLang === "hi" ? "hi-IN" : "en-IN";
-      recognition.onresult = function(event) {
-        const text = event.results[0][0].transcript.toLowerCase();
-        alert("Heard: " + text);
-
-        if (text.includes("pan")) openService("pan");
-        else if (text.includes("aadhaar") || text.includes("adhar")) openService("aadhaar");
-        else if (text.includes("electricity") || text.includes("bijli")) openService("electricity");
-        else if (text.includes("water") || text.includes("pani")) openService("water");
-        else if (text.includes("mobile") || text.includes("phone")) openService("mobile");
-        else if (text.includes("dth")) openService("dth");
-        else if (text.includes("gas") || text.includes("cylinder")) openService("gas");
-        else if (text.includes("train") || text.includes("rail")) openService("train");
-        else if (text.includes("payment") || text.includes("pay")) location.href = "payment.html";
-        else if (text.includes("logout")) logout();
-      };
-      recognition.start();
-    }
-
     if (localStorage.getItem("darkMode") === "true") {
       document.documentElement.classList.add("dark-mode");
     }
@@ -701,6 +671,7 @@
     loadActivity();
     loadNotifications();
   </script>
+  <script src="voiceCommands.js"></script>
 </body>
 </html>
 

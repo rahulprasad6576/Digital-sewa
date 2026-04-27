@@ -9,7 +9,7 @@ require("dotenv").config();
 const path = require("path");
 
 const { authLimiter, apiLimiter } = require("./utils/rateLimiter");
-const { isPaymentEnabled, createOrder, verifyPaymentSignature, verifyWebhookSignature, fetchPayment } = require("./utils/paymentGateway");
+const { isPaymentEnabled, createOrder, verifyPaymentSignature, verifyWebhookSignature, fetchPayment, DEMO_MODE: PAYMENT_DEMO } = require("./utils/paymentGateway");
 const { isRechargeEnabled, doRecharge, checkRechargeStatus, checkMobileOperator, DEMO_MODE: RECHARGE_DEMO } = require("./utils/rechargeService");
 const { isBillPaymentEnabled, fetchBill, payBill, checkBillStatus, DEMO_MODE: BILL_DEMO } = require("./utils/billPaymentService");
 
@@ -383,12 +383,13 @@ app.get("/services", authMiddleware, async (req, res) => {
   }
 });
 
-// ================== PAYMENT ROUTES (REAL RAZORPAY) ==================
+// ================== PAYMENT ROUTES ==================
 
 app.get("/payment/config", authMiddleware, (req, res) => {
   res.json({
-    razorpayKeyId: process.env.RAZORPAY_KEY_ID || null,
+    razorpayKeyId: PAYMENT_DEMO ? "rzp_test_demo" : (process.env.RAZORPAY_KEY_ID || null),
     paymentEnabled: isPaymentEnabled(),
+    demoMode: PAYMENT_DEMO,
     mode: process.env.NODE_ENV || "development",
   });
 });
@@ -414,11 +415,11 @@ app.post("/payment/order", authMiddleware, async (req, res) => {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+      razorpayKeyId: PAYMENT_DEMO ? "rzp_test_demo" : process.env.RAZORPAY_KEY_ID,
+      demoMode: PAYMENT_DEMO,
     });
   } catch (err) {
     console.error("Order creation error:", err.message);
-    // Handle Razorpay authentication failures specifically
     if (err.statusCode === 401 || err.error?.code === "UNAUTHORIZED") {
       return res.status(401).json({ message: "Razorpay authentication failed. Check your API keys." });
     }
@@ -445,10 +446,12 @@ app.post("/payment/verify", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Invalid payment signature" });
     }
 
-    // Double-check with Razorpay API
-    const razorpayPayment = await fetchPayment(paymentId);
-    if (razorpayPayment.status !== "captured") {
-      return res.status(400).json({ message: "Payment not captured by Razorpay" });
+    // In demo mode, skip Razorpay API check
+    if (!PAYMENT_DEMO) {
+      const razorpayPayment = await fetchPayment(paymentId);
+      if (razorpayPayment.status !== "captured") {
+        return res.status(400).json({ message: "Payment not captured by Razorpay" });
+      }
     }
 
     const transactionId = paymentId;
@@ -492,7 +495,6 @@ app.post("/razorpay/webhook", express.raw({ type: "application/json" }), async (
 
     if (event.event === "payment.captured") {
       const payment = event.payload.payment.entity;
-      // Check if already recorded
       const existing = await Payment.findOne({ transactionId: payment.id });
       if (!existing) {
         await new Payment({
@@ -538,7 +540,7 @@ app.get("/payment/status/:transactionId", authMiddleware, async (req, res) => {
   }
 });
 
-// ================== RECHARGE ROUTES (REAL) ==================
+// ================== RECHARGE ROUTES ==================
 
 app.post("/recharge/mobile", authMiddleware, async (req, res) => {
   try {
@@ -547,7 +549,6 @@ app.post("/recharge/mobile", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Valid number and amount (min ₹10) required" });
     }
 
-    // Verify payment was completed if paymentId provided
     if (paymentId) {
       const existingPayment = await Payment.findOne({ transactionId: paymentId, userId: req.user.userId });
       if (!existingPayment) {
@@ -592,7 +593,6 @@ app.post("/recharge/dth", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Valid subscriber ID and amount required" });
     }
 
-    // Verify payment was completed if paymentId provided
     if (paymentId) {
       const existingPayment = await Payment.findOne({ transactionId: paymentId, userId: req.user.userId });
       if (!existingPayment) {
@@ -676,7 +676,7 @@ app.post("/operator/detect", authMiddleware, async (req, res) => {
   }
 });
 
-// ================== BILL PAYMENT ROUTES (REAL) ==================
+// ================== BILL PAYMENT ROUTES ==================
 
 app.post("/bill/fetch", authMiddleware, async (req, res) => {
   try {
