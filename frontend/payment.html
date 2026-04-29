@@ -29,23 +29,26 @@
   <nav class="navbar">
     <div class="nav-brand">🚀 Digital Seva</div>
     <div class="nav-user">
-      <a href="dashboard.html" style="color: var(--text); text-decoration: none;">Dashboard</a>
-      <button onclick="toggleLang()" class="lang-switch" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
-      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
-      <button onclick="logout()" style="background: var(--error); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Logout</button>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <select onchange="changeLang(this.value)" class="lang-select" data-magnetic>
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+      </select>
+      <button onclick="toggleDarkMode()" data-magnetic>🌙</button>
+      <button onclick="logout()" class="btn-error">Logout</button>
     </div>
   </nav>
 
   <div class="payment-page">
-    <h1 style="text-align: center; color: var(--text); margin-bottom: 10px;" data-key="paymentTitle">Payments & Recharge</h1>
+    <h1 class="section-title" data-reveal data-key="paymentTitle">Payments & Recharge</h1>
     <div style="text-align: center; margin-bottom: 25px;">
       <span id="modeBadge" class="mode-badge live">Loading...</span>
     </div>
 
-    <div class="tab-buttons">
-      <button class="tab-btn active" onclick="switchTab('payment')" data-key="tabPayment">Service Payment</button>
-      <button class="tab-btn" onclick="switchTab('mobile')" data-key="tabMobile">Mobile Recharge</button>
-      <button class="tab-btn" onclick="switchTab('dth')" data-key="tabDth">DTH Recharge</button>
+    <div class="tab-buttons" data-reveal>
+      <button class="tab-btn active" onclick="switchTab('payment')" data-reveal data-key="tabPayment">Service Payment</button>
+      <button class="tab-btn" onclick="switchTab('mobile')" data-reveal data-key="tabMobile">Mobile Recharge</button>
+      <button class="tab-btn" onclick="switchTab('dth')" data-reveal data-key="tabDth">DTH Recharge</button>
     </div>
 
     <!-- Service Payment Tab -->
@@ -76,6 +79,7 @@
         <button class="btn" onclick="makePayment()" data-key="payNow">Pay Now</button>
         <p id="paymentResult" style="margin-top: 15px; text-align: center;"></p>
       </div>
+    </div>
 
     <!-- Mobile Recharge Tab -->
     <div id="tab-mobile" class="tab-content">
@@ -85,6 +89,7 @@
           <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Mobile Number</label>
           <input id="mobileNumber" type="tel" placeholder="10 digit mobile number" maxlength="10" onblur="detectOperator()" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
           <div id="autoDetectInfo" class="auto-detect-info"></div>
+        </div>
         <div class="input-group">
           <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Select Operator</label>
           <div class="operator-grid">
@@ -93,6 +98,7 @@
             <button class="operator-btn" onclick="selectOperator(this, 'Vi')">Vi</button>
             <button class="operator-btn" onclick="selectOperator(this, 'BSNL')">BSNL</button>
           </div>
+        </div>
         <div class="input-group">
           <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Amount (₹)</label>
           <input id="mobileAmount" type="number" placeholder="Min ₹10" min="10" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
@@ -100,6 +106,7 @@
         <button class="btn" onclick="doMobileRecharge()">Recharge Now</button>
         <p id="mobileResult" style="margin-top: 15px; text-align: center;"></p>
       </div>
+    </div>
 
     <!-- DTH Recharge Tab -->
     <div id="tab-dth" class="tab-content">
@@ -117,6 +124,7 @@
             <button class="operator-btn" onclick="selectDthOperator(this, 'Airtel DTH')">Airtel DTH</button>
             <button class="operator-btn" onclick="selectDthOperator(this, 'D2H')">D2H</button>
           </div>
+        </div>
         <div class="input-group">
           <label style="display: block; margin-bottom: 8px; color: var(--text); font-weight: 500;">Amount (₹)</label>
           <input id="dthAmount" type="number" placeholder="Min ₹10" min="10" style="width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text);">
@@ -124,10 +132,12 @@
         <button class="btn" onclick="doDthRecharge()">Recharge Now</button>
         <p id="dthResult" style="margin-top: 15px; text-align: center;"></p>
       </div>
+    </div>
 
     <div style="margin-top: 30px;">
       <h3 style="color: var(--text); margin-bottom: 15px;" data-key="recentPayments">Recent Payments</h3>
       <div id="paymentList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
   </div>
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -280,6 +290,17 @@
 
     async function makePayment() {
       const service = document.getElementById("serviceSelect").value;
+
+      if (service === "aadhaar") {
+        const resultEl = document.getElementById("paymentResult");
+        resultEl.textContent = "Redirecting to official Aadhaar portal...";
+        resultEl.style.color = "var(--primary)";
+        setTimeout(() => {
+          window.location.href = "https://myaadhaar.uidai.gov.in";
+        }, 500);
+        return;
+      }
+
       const amount = parseInt(document.getElementById("amount").value);
       const resultEl = document.getElementById("paymentResult");
       const payBtn = document.querySelector(".btn[onclick='makePayment()']");
@@ -425,10 +446,12 @@
             } else {
               resultEl.textContent = data.message || "Recharge failed";
               resultEl.style.color = "var(--error)";
+              if (btn) { btn.disabled = false; }
             }
           } catch (err) {
             resultEl.textContent = "Recharge failed: " + err.message;
             resultEl.style.color = "var(--error)";
+            if (btn) { btn.disabled = false; }
           }
         }
       });
@@ -478,10 +501,12 @@
             } else {
               resultEl.textContent = data.message || "Recharge failed";
               resultEl.style.color = "var(--error)";
+              if (btn) { btn.disabled = false; }
             }
           } catch (err) {
             resultEl.textContent = "Recharge failed: " + err.message;
             resultEl.style.color = "var(--error)";
+            if (btn) { btn.disabled = false; }
           }
         }
       });
@@ -551,6 +576,13 @@
               if (btn) { btn.disabled = false; }
             }
           },
+          modal: {
+            ondismiss: function() {
+              resultEl.textContent = "Payment cancelled by user";
+              resultEl.style.color = "var(--error)";
+              if (btn) { btn.disabled = false; }
+            }
+          },
           prefill: { name: localStorage.getItem("userName") || "" },
           theme: { color: "#667eea" }
         };
@@ -605,9 +637,11 @@
             <div>
               <strong style="color: var(--text);">${p.service}</strong>
               <div style="color: var(--text-light); font-size: 0.85rem;">${new Date(p.createdAt).toLocaleDateString()}</div>
+            </div>
             <div style="text-align: right;">
               <div style="color: var(--primary); font-weight: 600;">₹${p.amount}</div>
               <div style="color: ${p.status === 'completed' ? 'var(--success)' : 'var(--warning)'}; font-size: 0.8rem;">${p.status}</div>
+            </div>
           `;
           list.appendChild(div);
         });
@@ -638,6 +672,7 @@
       }
     })();
   </script>
+
   <script src="voiceCommands.js"></script>
 </body>
 </html>

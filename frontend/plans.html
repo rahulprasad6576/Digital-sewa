@@ -36,24 +36,27 @@
 <body>
   <nav class="navbar">
     <div class="nav-brand">🚀 Digital Seva</div>
-    <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
-      <a href="index.html" style="color: var(--text); text-decoration: none;">Home</a>
-      <a href="about.html" style="color: var(--text); text-decoration: none;">About</a>
-      <a href="plans.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Plans</a>
-      <a href="contact.html" style="color: var(--text); text-decoration: none;">Contact</a>
-      <a href="login.html" style="color: var(--text); text-decoration: none;">Login</a>
-      <button class="lang-switch" onclick="toggleLang()" style="background: var(--primary); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">हिंदी</button>
-      <button onclick="toggleDarkMode()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">🌙</button>
+    <div class="nav-user">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="plans.html" class="nav-link active">Plans</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="login.html" class="nav-link">Login</a>
+      <select onchange="changeLang(this.value)" class="lang-select" data-magnetic>
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+      </select>
+      <button onclick="toggleDarkMode()" data-magnetic>🌙</button>
     </div>
   </nav>
 
-  <section class="plans-hero">
-    <h1 data-key="plansTitle">Choose Your Plan</h1>
-    <p data-key="plansSubtitle">Flexible pricing for everyone</p>
+  <section class="plans-hero" data-reveal>
+    <h1 class="section-title" data-reveal data-key="plansTitle">Choose Your Plan</h1>
+    <p class="hero-subtitle" data-reveal data-key="plansSubtitle">Flexible pricing for everyone</p>
   </section>
 
-  <div class="plans-container">
-    <div class="plan-card">
+  <div class="plans-container" data-reveal>
+    <div class="plan-card" data-tilt data-reveal>
       <h3 data-key="basic">Basic</h3>
       <div class="plan-price">Free</div>
       <p style="color: var(--text-light);" data-key="basicDesc">Perfect for getting started</p>
@@ -224,6 +227,7 @@
 
     applyLang();
   </script>
+
   <script src="voiceCommands.js"></script>
 </body>
 </html>
