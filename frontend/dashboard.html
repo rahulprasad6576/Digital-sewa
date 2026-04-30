@@ -59,15 +59,15 @@
 
     <!-- Services Grid -->
     <div class="services-grid">
-      <div class="service-card" onclick="openService('pan')">
+      <div class="service-card" onclick="window.open('https://www.onlineservices.nsdl.com/paam/endUserRegisterContact.html', '_blank')" style="border-left: 4px solid #ff6b6b;">
         <div class="service-icon">🆔</div>
-        <h3 data-key="panCard">PAN Card</h3>
-        <p data-key="panDesc">Apply, update or track PAN</p>
+        <h3 style="color: #ff6b6b;">PAN Card</h3>
+        <p>Official NSDL PAN Portal →</p>
       </div>
-      <div class="service-card" onclick="openService('aadhaar')">
+      <div class="service-card" onclick="window.open('https://myaadhaar.uidai.gov.in/', '_blank')" style="border-left: 4px solid #4ecdc4;">
         <div class="service-icon">🪪</div>
-        <h3 data-key="aadhaar">Aadhaar</h3>
-        <p data-key="aadhaarDesc">Update or download Aadhaar</p>
+        <h3 style="color: #4ecdc4;">Aadhaar</h3>
+        <p>Official UIDAI Portal →</p>
       </div>
       <div class="service-card" onclick="openService('electricity')">
         <div class="service-icon">💡</div>
@@ -127,21 +127,21 @@
   </div>
 
   <!-- Service Modal -->
-  <div id="serviceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div style="background: var(--card-bg); border-radius: 20px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 id="modalTitle" style="color: var(--text);">Service</h2>
-        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text);">✕</button>
+<div id="serviceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div class="glass-card" style="min-width: 450px; max-width: 90vw; max-height: 80vh; overflow-y: auto; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+        <h2 id="modalTitle" style="color: var(--text); margin: 0; font-size: 1.5rem;">Service</h2>
+        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); padding: 0.5rem;">✕</button>
       </div>
-      <div id="modalContent">
+      <div id="modalContent" style="color: var(--text);">
         <!-- Dynamic content inserted here -->
       </div>
     </div>
   </div>
 
   <!-- Chatbot -->
-  <div class="chatbot-widget">
-    <div class="chatbot-box" id="chatbotBox">
+  <div class="chatbot-widget" style="position: fixed; bottom: 20px; right: 110px; z-index: 1000;">
+    <div class="chatbot-box glass-card" id="chatbotBox">
       <div class="chatbot-header">
         <span>🤖 Digital Seva Assistant</span>
         <button onclick="toggleChatbot()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
@@ -150,11 +150,27 @@
         <div class="message bot">Hello! I'm your Digital Seva assistant. How can I help you today?</div>
       </div>
       <div class="chatbot-input">
-        <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatbotMessage()" style="flex: 1; padding: 10px 15px; border: 2px solid var(--border); border-radius: 25px; background: var(--card-bg); color: var(--text);">
-        <button onclick="sendChatbotMessage()" style="padding: 10px 20px; border: none; border-radius: 25px; background: var(--primary); color: white; cursor: pointer;">➤</button>
+        <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatbotMessage()">
+        <button onclick="sendChatbotMessage()">➤</button>
       </div>
     </div>
-    <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+    <button class="chatbot-toggle fab-btn glass-card" onclick="toggleChatbot()" title="Chat 💬">
+      💬
+    </button>
+  </div>
+
+  <!-- Voice FAB -->
+  <div class="fab-container" style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 999;">
+    <button id="voiceButton" class="fab-btn voice-button glass-card" onclick="voiceManager.startListening()" title="Voice 🎤">
+      🎤
+    </button>
+  </div>
+
+  <!-- Voice Status -->
+  <div id="voiceStatus" style="display: none; position: fixed; bottom: 110px; right: 25px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem; min-width: 280px; box-shadow: var(--shadow-lg); z-index: 998;">
+    <div class="status-title" style="color: var(--primary); font-weight: 600; margin-bottom: 0.75rem; font-size: 0.95rem;">🎤 Voice Active</div>
+    <div id="transcriptDisplay" style="color: var(--text); font-size: 0.9rem; line-height: 1.5; min-height: 3rem; opacity: 0.9;">Click mic to speak</div>
+    <button id="voiceHelpButton" onclick="showVoiceHelp()" style="margin-top: 1rem; background: var(--gradient-primary); color: white; border: none; padding: 0.5rem 1.25rem; border-radius: 25px; cursor: pointer; font-size: 0.85rem; font-weight: 600; width: 100%;">View Commands</button>
   </div>
 
   <footer class="footer">
@@ -418,6 +434,9 @@
       currentLang = lang;
       localStorage.setItem("lang", currentLang);
       applyLang();
+      if (voiceManager) {
+        voiceManager.setLanguage(lang);
+      }
     }
 
     function toggleDarkMode() {
@@ -670,6 +689,7 @@
     applyLang();
     loadActivity();
     loadNotifications();
+    initVoiceCommands();
   </script>
   <script src="voiceCommands.js"></script>
 </body>
